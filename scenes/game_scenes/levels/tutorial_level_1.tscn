@@ -1,20 +1,20 @@
 [gd_scene load_steps=29 format=3 uid="uid://dhmaif1gu57tt"]
 
 [ext_resource type="Script" path="res://scenes/game_scenes/levels/level_script.gd" id="1_o6b7p"]
-[ext_resource type="Texture2D" uid="uid://i4hfd3ju6hm5" path="res://assets/Environment/Industrial_City/Tiles.png" id="1_r14d3"]
+[ext_resource type="Texture2D" uid="uid://i4hfd3ju6hm5" path="res://assets/Environment/Tilemaps/Tiles.png" id="1_r14d3"]
 [ext_resource type="PackedScene" uid="uid://b1wakm21xgkoy" path="res://scenes/game_scenes/player_scenes/player.tscn" id="2_04hox"]
-[ext_resource type="Texture2D" uid="uid://csvt6ohkygu1b" path="res://assets/Environment/Industrial_City/Buildings.png" id="2_qh620"]
-[ext_resource type="Texture2D" uid="uid://cucreco6rcg8s" path="res://assets/Environment/Industrial_City/city 1/1.png" id="3_7rwpn"]
-[ext_resource type="Texture2D" uid="uid://16upbcoy83on" path="res://assets/Environment/Industrial_City/Props.png" id="3_20nvb"]
+[ext_resource type="Texture2D" uid="uid://csvt6ohkygu1b" path="res://assets/Environment/Tilemaps/Buildings.png" id="2_qh620"]
+[ext_resource type="Texture2D" uid="uid://cucreco6rcg8s" path="res://assets/Environment/Background/1.png" id="3_7rwpn"]
+[ext_resource type="Texture2D" uid="uid://16upbcoy83on" path="res://assets/Environment/Tilemaps/Props.png" id="3_20nvb"]
 [ext_resource type="Script" path="res://scripts/camera_scripts/Camera2D_testLevel.gd" id="3_tfryr"]
-[ext_resource type="Texture2D" uid="uid://bvejajk73jxjm" path="res://assets/Environment/Industrial_City/city 1/2.png" id="4_tcuef"]
-[ext_resource type="Texture2D" uid="uid://m8nhpfrhdj2q" path="res://assets/Environment/Industrial_City/city 1/3.png" id="5_qmc5w"]
+[ext_resource type="Texture2D" uid="uid://bvejajk73jxjm" path="res://assets/Environment/Background/2.png" id="4_tcuef"]
+[ext_resource type="Texture2D" uid="uid://m8nhpfrhdj2q" path="res://assets/Environment/Background/3.png" id="5_qmc5w"]
 [ext_resource type="Script" path="res://scenes/user_interface/user_interface.gd" id="5_ux1mr"]
 [ext_resource type="PackedScene" uid="uid://c41smqs5dtjl2" path="res://scenes/user_interface/healthbar.tscn" id="6_axytt"]
 [ext_resource type="PackedScene" uid="uid://cb78fjl1hv453" path="res://scenes/game_scenes/Collectables/Collectable Resources/base_item.tscn" id="6_o3dee"]
-[ext_resource type="Texture2D" uid="uid://buvgi34di5l4v" path="res://assets/Environment/Industrial_City/city 1/4.png" id="6_qedtl"]
+[ext_resource type="Texture2D" uid="uid://buvgi34di5l4v" path="res://assets/Environment/Background/4.png" id="6_qedtl"]
 [ext_resource type="PackedScene" uid="uid://db5jr3rlqw8k7" path="res://scenes/game_scenes/levels/transition/door.tscn" id="6_yvb8d"]
-[ext_resource type="Texture2D" uid="uid://dr7lts2j8gmtj" path="res://assets/Environment/Industrial_City/city 1/5.png" id="7_0x1hl"]
+[ext_resource type="Texture2D" uid="uid://dr7lts2j8gmtj" path="res://assets/Environment/Background/5.png" id="7_0x1hl"]
 [ext_resource type="PackedScene" uid="uid://mj8kcovlpbc1" path="res://scenes/user_interface/collectable_counter.tscn" id="7_62fkh"]
 [ext_resource type="PackedScene" uid="uid://d2j4wb08u7xj5" path="res://scenes/game_scenes/Collectables/key.tscn" id="7_180sp"]
 [ext_resource type="Texture2D" uid="uid://ytmx8ycpjhbd" path="res://assets/Menu_assets/Buttons/pause_button.png" id="8_mc05n"]
@@ -1641,7 +1641,6 @@ level_name = "Level1"
 stream = ExtResource("20_iaqjs")
 volume_db = -36.0
 autoplay = true
-bus = &"Music"
 
 [connection signal="pressed" from="User_Interface/MarginContainer/TextureButton" to="User_Interface" method="_on_texture_button_pressed"]
 

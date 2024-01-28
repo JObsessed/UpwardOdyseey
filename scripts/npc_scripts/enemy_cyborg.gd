@@ -1,6 +1,6 @@
 extends CharacterBody2D
 
-var death_eff = preload("res://scenes/game_scenes/npc/enemy_death.tscn")
+var death_eff = preload("res://scenes/game_scenes/Enemies/effects/enemy_death.tscn")
 
 @export var speed : int = 1500
 @export var wait_time : int = 3
