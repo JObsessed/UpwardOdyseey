@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://cqoscolo3acik"
+path="res://.godot/imported/InterRegret.ogg-0ccf6d849cfb78d80ab4c4a51069d8e6.oggvorbisstr"
+
+[deps]
+
+source_file="res://assets/Music & Sounds/music/InterRegret.ogg"
+dest_files=["res://.godot/imported/InterRegret.ogg-0ccf6d849cfb78d80ab4c4a51069d8e6.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

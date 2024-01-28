@@ -1,0 +1,35 @@
+[gd_scene load_steps=3 format=3 uid="uid://lgn2is5rxyu1"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wy4sv"]
+bg_color = Color(0.627451, 0, 0.627451, 0.686275)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 0.866667, 0.988235, 0.713726)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="SystemFont" id="SystemFont_wu36q"]
+font_names = PackedStringArray("Krungthep")
+msdf_pixel_range = 15
+
+[node name="interaction_notifier" type="Node2D"]
+
+[node name="TextureRect" type="Panel" parent="."]
+offset_left = -54.0
+offset_top = -61.0
+offset_right = 57.0
+offset_bottom = -42.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_wy4sv")
+
+[node name="Label" type="Label" parent="TextureRect"]
+offset_left = 8.0
+offset_top = 2.0
+offset_right = 103.0
+offset_bottom = 16.0
+theme_override_fonts/font = SubResource("SystemFont_wu36q")
+theme_override_font_sizes/font_size = 10
+text = "press \"c\" to chat."

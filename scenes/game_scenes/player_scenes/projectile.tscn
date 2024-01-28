@@ -1,0 +1,49 @@
+[gd_scene load_steps=4 format=3 uid="uid://b13c6adf8ymky"]
+
+[ext_resource type="Texture2D" uid="uid://ci0j50tow801l" path="res://assets/Environment/Other/projectile 2.png" id="1_tjenu"]
+
+[sub_resource type="GDScript" id="GDScript_ahsul"]
+script/source = "extends Area2D
+
+
+const BULLET_SPEED = 500
+# Called when the node enters the scene tree for the first time.
+
+func _ready():
+	pass
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+func _process(delta):
+	position += Vector2.RIGHT.rotated(rotation) * delta * BULLET_SPEED
+	
+func _on_visible_on_screen_notifier_2d_screen_exited():
+	queue_free()
+
+func _on_body_entered(body):
+	queue_free()
+"
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_goyor"]
+
+[node name="projectile" type="Area2D"]
+z_index = 99
+scale = Vector2(0.2, 0.2)
+collision_layer = 16
+collision_mask = 1033
+script = SubResource("GDScript_ahsul")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(5, -3.8147e-06)
+shape = SubResource("CircleShape2D_goyor")
+debug_color = Color(0.87451, 0.811765, 0.270588, 0.419608)
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(1.5, 1.59)
+texture = ExtResource("1_tjenu")
+
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
+process_mode = 3
+position = Vector2(-7.10543e-15, 2.38419e-07)
+scale = Vector2(1.6875, 1.24375)
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="screen_exited" from="VisibleOnScreenNotifier2D" to="." method="_on_visible_on_screen_notifier_2d_screen_exited"]

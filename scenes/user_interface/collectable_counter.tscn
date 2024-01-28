@@ -1,0 +1,23 @@
+[gd_scene load_steps=3 format=3 uid="uid://mj8kcovlpbc1"]
+
+[ext_resource type="Texture2D" uid="uid://bs6lt7gvnqf58" path="res://assets/Environment/Collectables/datapad.png" id="1_aajyn"]
+
+[sub_resource type="SystemFont" id="SystemFont_57ojd"]
+
+[node name="Collectable_Counter" type="HBoxContainer"]
+offset_right = 40.0
+offset_bottom = 40.0
+theme_override_constants/separation = 6
+
+[node name="TextureRect" type="TextureRect" parent="."]
+custom_minimum_size = Vector2(56, 80)
+layout_mode = 2
+texture = ExtResource("1_aajyn")
+stretch_mode = 5
+
+[node name="Label" type="Label" parent="."]
+custom_minimum_size = Vector2(25, 2.08165e-12)
+layout_mode = 2
+theme_override_fonts/font = SubResource("SystemFont_57ojd")
+theme_override_font_sizes/font_size = 24
+text = "000000"

@@ -1,0 +1,52 @@
+[gd_scene load_steps=6 format=3 uid="uid://dl4houhovkqae"]
+
+[ext_resource type="Script" path="res://scripts/settings_menu.gd" id="1_jbhk0"]
+[ext_resource type="PackedScene" uid="uid://cw03xv8nidfx4" path="res://scenes/menu_scenes/tab_menu.tscn" id="2_qr08w"]
+[ext_resource type="Texture2D" uid="uid://68thi11sywon" path="res://assets/Menu_assets/Buttons/normal/exit_settings_button.png" id="3_hhg5x"]
+[ext_resource type="Texture2D" uid="uid://su6ocanuymni" path="res://assets/Menu_assets/Buttons/hover/exit_settings_button_hover.png" id="4_8kr7b"]
+[ext_resource type="AudioStream" uid="uid://cdnd0u3cfljyj" path="res://assets/Music & Sounds/sfx/mouse_click.mp3" id="5_nwl23"]
+
+[node name="settings_menu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_jbhk0")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = -48
+
+[node name="tab_menu" parent="MarginContainer/VBoxContainer" instance=ExtResource("2_qr08w")]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="exit_setting_button" type="TextureButton" parent="MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(128, 64)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 8
+texture_normal = ExtResource("3_hhg5x")
+texture_hover = ExtResource("4_8kr7b")
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+visible = false
+stream = ExtResource("5_nwl23")
+volume_db = -12.0
+bus = &"SFX"
+
+[connection signal="mouse_entered" from="MarginContainer/VBoxContainer/exit_setting_button" to="." method="_on_exit_setting_button_mouse_entered"]

@@ -1,0 +1,150 @@
+[gd_scene load_steps=19 format=3 uid="uid://db5jr3rlqw8k7"]
+
+[ext_resource type="Script" path="res://scenes/game_scenes/levels/transition/door.gd" id="1_bko3w"]
+[ext_resource type="Texture2D" uid="uid://dwhgffdmgdbs7" path="res://assets/Environment/Other/tranistions/Door 1/6.png" id="3_418vy"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_sille"]
+atlas = ExtResource("3_418vy")
+region = Rect2(160, 21, 32, 43)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3fldp"]
+atlas = ExtResource("3_418vy")
+region = Rect2(128, 21, 32, 43)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_h0s4n"]
+atlas = ExtResource("3_418vy")
+region = Rect2(96, 21, 32, 43)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0rin1"]
+atlas = ExtResource("3_418vy")
+region = Rect2(64, 21, 32, 43)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_e4x7h"]
+atlas = ExtResource("3_418vy")
+region = Rect2(32, 21, 32, 43)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dp3v2"]
+atlas = ExtResource("3_418vy")
+region = Rect2(0, 21, 32, 43)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_11x4l"]
+atlas = ExtResource("3_418vy")
+region = Rect2(0, 21, 32, 43)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cbtqa"]
+atlas = ExtResource("3_418vy")
+region = Rect2(32, 21, 32, 43)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_778cb"]
+atlas = ExtResource("3_418vy")
+region = Rect2(64, 21, 32, 43)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3cuvd"]
+atlas = ExtResource("3_418vy")
+region = Rect2(96, 21, 32, 43)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_s81w8"]
+atlas = ExtResource("3_418vy")
+region = Rect2(128, 21, 32, 43)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rcn17"]
+atlas = ExtResource("3_418vy")
+region = Rect2(160, 21, 32, 43)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_8haag"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_sille")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3fldp")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_h0s4n")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0rin1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_e4x7h")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dp3v2")
+}],
+"loop": false,
+"name": &"close_door",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_11x4l")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cbtqa")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_778cb")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3cuvd")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_s81w8")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rcn17")
+}],
+"loop": false,
+"name": &"open_door",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_eobdp"]
+size = Vector2(65, 80)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_buxay"]
+size = Vector2(15, 78.5)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_7a04p"]
+size = Vector2(50, 80)
+
+[node name="door" type="StaticBody2D"]
+scale = Vector2(0.8, 0.8)
+script = ExtResource("1_bko3w")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(0, -86)
+scale = Vector2(2, 2)
+sprite_frames = SubResource("SpriteFrames_8haag")
+animation = &"close_door"
+autoplay = "close_door"
+frame = 5
+frame_progress = 1.0
+centered = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(23.5, -40)
+shape = SubResource("RectangleShape2D_eobdp")
+
+[node name="Area2D" type="Area2D" parent="."]
+collision_layer = 32
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(47.5, -39.25)
+shape = SubResource("RectangleShape2D_buxay")
+debug_color = Color(0.811765, 0.00392157, 0.980392, 0.419608)
+
+[node name="KeyArea2D2" type="Area2D" parent="."]
+collision_layer = 256
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="KeyArea2D2"]
+position = Vector2(-25, -40)
+shape = SubResource("RectangleShape2D_7a04p")
+debug_color = Color(0.752941, 0.458824, 0, 0.419608)
+
+[connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
+[connection signal="body_entered" from="KeyArea2D2" to="." method="_on_key_area_2d_2_body_entered"]
+[connection signal="body_exited" from="KeyArea2D2" to="." method="_on_key_area_2d_2_body_exited"]

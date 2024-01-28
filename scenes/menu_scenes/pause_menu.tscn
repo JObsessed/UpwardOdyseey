@@ -1,0 +1,86 @@
+[gd_scene load_steps=13 format=3 uid="uid://bowq2gitidj38"]
+
+[ext_resource type="Script" path="res://scenes/menu_scenes/pause_menu.gd" id="1_qrqhv"]
+[ext_resource type="Texture2D" uid="uid://c28pm1lnwddcy" path="res://assets/Menu_assets/pictures/Menu_bg.jpg" id="1_xwsc7"]
+[ext_resource type="Texture2D" uid="uid://j6nd3tthh5kj" path="res://assets/Menu_assets/Buttons/normal/continue_button.png" id="2_dttdi"]
+[ext_resource type="Texture2D" uid="uid://3xvwjjixfga7" path="res://assets/Menu_assets/Buttons/hover/continue_button_hover.png" id="3_8lnh1"]
+[ext_resource type="Texture2D" uid="uid://bknt8dxi5ldtq" path="res://assets/Menu_assets/Buttons/normal/settings_button_2.png" id="4_dueev"]
+[ext_resource type="Texture2D" uid="uid://bx4bq8xbqdbuw" path="res://assets/Menu_assets/Buttons/hover/settings_button_hover.png" id="5_xpila"]
+[ext_resource type="Texture2D" uid="uid://swjmoyycvddd" path="res://assets/Menu_assets/Buttons/normal/exit_button.png" id="6_6hbrf"]
+[ext_resource type="Texture2D" uid="uid://6avvn0oyfyhi" path="res://assets/Menu_assets/Buttons/hover/exit_button_hover.png" id="7_2cxpp"]
+[ext_resource type="PackedScene" uid="uid://dl4houhovkqae" path="res://scenes/menu_scenes/settings_menu.tscn" id="9_n1vml"]
+[ext_resource type="Texture2D" uid="uid://bg04xgm6dujgk" path="res://assets/Menu_assets/Buttons/back_to_game_button.png" id="10_emt54"]
+[ext_resource type="Texture2D" uid="uid://bft21qfq88rmm" path="res://assets/Menu_assets/Buttons/hover/back_to_game_button_hover.png" id="11_eoett"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_y7gaw"]
+bg_color = Color(0.345098, 0.0588235, 0.372549, 0.462745)
+
+[node name="pause_menu" type="CanvasLayer"]
+process_mode = 3
+layer = 2
+script = ExtResource("1_qrqhv")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+modulate = Color(0.34902, 0.4, 1, 1)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_xwsc7")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="PanelContainer" type="PanelContainer" parent="MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_styles/panel = SubResource("StyleBoxFlat_y7gaw")
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/PanelContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 24
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 24
+theme_override_constants/margin_bottom = 12
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/PanelContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="continue_button" type="TextureButton" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+texture_normal = ExtResource("2_dttdi")
+texture_hover = ExtResource("3_8lnh1")
+
+[node name="settings_button" type="TextureButton" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+texture_normal = ExtResource("4_dueev")
+texture_hover = ExtResource("5_xpila")
+
+[node name="exit_button" type="TextureButton" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+texture_normal = ExtResource("6_6hbrf")
+texture_hover = ExtResource("7_2cxpp")
+
+[node name="settings_menu" parent="." instance=ExtResource("9_n1vml")]
+process_mode = 3
+visible = false
+
+[node name="exit_setting_button" parent="settings_menu/MarginContainer/VBoxContainer" index="1"]
+texture_normal = ExtResource("10_emt54")
+texture_hover = ExtResource("11_eoett")
+
+[node name="AudioStreamPlayer2D" parent="settings_menu" index="1"]
+visible = true
+
+[connection signal="pressed" from="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/continue_button" to="." method="_on_continue_button_pressed"]
+[connection signal="pressed" from="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/exit_button" to="." method="_on_exit_button_pressed"]
+
+[editable path="settings_menu"]

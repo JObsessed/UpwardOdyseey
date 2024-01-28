@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="DatapadResource" load_steps=3 format=3 uid="uid://b0v30iadol8bn"]
+
+[ext_resource type="Script" path="res://scenes/game_scenes/Collectables/Collectable Resources/datapad_resource.gd" id="1_aetdg"]
+[ext_resource type="Texture2D" uid="uid://bs6lt7gvnqf58" path="res://assets/Environment/Collectables/datapad.png" id="1_cvshe"]
+
+[resource]
+script = ExtResource("1_aetdg")
+value = 1
+collectable_texture = ExtResource("1_cvshe")
+collectable_type = "datapad"

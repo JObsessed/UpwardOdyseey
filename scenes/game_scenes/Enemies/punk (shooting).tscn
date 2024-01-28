@@ -1,0 +1,374 @@
+[gd_scene load_steps=20 format=3 uid="uid://cked1053jieve"]
+
+[ext_resource type="PackedScene" uid="uid://cafllu53eb60b" path="res://scenes/game_scenes/Enemies/enemy_projectile.tscn" id="1_5s3rd"]
+[ext_resource type="Texture2D" uid="uid://pl7s6ig6xcol" path="res://assets/NPC Modells/Punk/Punk_Walk.png" id="1_xeftq"]
+[ext_resource type="PackedScene" uid="uid://br4asclxmeb6e" path="res://scenes/user_interface/danger_notifier.tscn" id="3_yxk2i"]
+
+[sub_resource type="GDScript" id="GDScript_yd1w5"]
+script/source = "class_name EnemyTemplate
+extends CharacterBody2D
+
+var death_eff = preload(\"res://scenes/game_scenes/Enemies/effects/enemy_death.tscn\")
+
+@onready var wall_check_left = $wall_check/wall_check_left as RayCast2D
+@onready var wall_check_right = $wall_check/wall_check_right as RayCast2D
+@onready var floor_check_left = $floor_check/floor_check_left as RayCast2D
+@onready var floor_check_right = $floor_check/floor_check_right as RayCast2D
+@onready var visibility_range = $player_tracker/visibilitiy_range as RayCast2D
+@onready var aim = $player_aim/aim as RayCast2D
+@onready var player_tracker = $player_tracker as Node2D
+@onready var player_aim = $player_aim as Node2D
+@onready var chase_timer = $timer/chase_timer as Timer
+@onready var shoot_timer = $timer/shoot_timer as Timer
+@onready var animated_sprite_2d = $Sprite2D as AnimatedSprite2D
+
+@export var projectile : PackedScene
+
+const SPEED : float = 40.0
+const CHASE_SPEED : float = 30.0
+const JUMP_VELOCITY : float = -400.0
+
+# Get the gravity from the project settings to be synced with RigidBody nodes.
+var gravity = ProjectSettings.get_setting(\"physics/2d/default_gravity\")
+
+var current_speed : float = 0.0
+var player_in_sight : bool = false
+var player
+var player_track_dir : Vector2
+var player_aim_dir : Vector2
+
+#Leben- und Schadensberechnung:
+var enemy_is_alive : bool = true
+var enemyhealthPoints = 10
+var damage = 0
+var can_take_dmg = true
+var base_damage = 1.0
+
+enum States {
+	#Idle,
+	Walk,
+	Chase,
+}
+
+var state = States.Walk
+
+func _ready():
+	$danger_notifier.visible = false
+	animation()
+	player = get_tree().get_first_node_in_group(\"player\")
+	chase_timer.timeout.connect(on_timer_timeout)
+
+func on_timer_timeout() -> void:
+	if not player_in_sight:
+		state = States.Walk
+
+func player_vision():
+	if visibility_range.is_colliding():
+		var collision = visibility_range.get_collider()
+		if collision != player:
+			return
+		else:
+			state = States.Chase
+			$danger_notifier.visible = true
+			chase_timer.start(1)
+			player_in_sight = true
+	else:
+		player_in_sight = false
+		$danger_notifier.visible = false
+
+func track_player():
+	if player == null:
+		return
+	
+	player_track_dir = Vector2(player.position.x, player.position.y - 8) - visibility_range.position
+	player_tracker.look_at(player_track_dir)
+
+func aim_at_player():
+	if player == null:
+		return
+	
+	player_aim_dir = Vector2(player.position.x, player.position.y - 8) - aim.position
+	player_aim.look_at(player_aim_dir)
+
+func _check_aim():
+	if aim.get_collider() == player and shoot_timer.is_stopped():
+		shoot_timer.start()
+	elif aim.get_collider() != player and not shoot_timer.is_stopped():
+		shoot_timer.stop()
+
+func _shoot():
+	var enemy_projectile = projectile.instantiate()
+	get_tree().current_scene.add_child(enemy_projectile)
+	enemy_projectile.global_position = global_position
+	var dir = (player.global_position - global_position).normalized()
+	enemy_projectile.global_rotation = dir.angle() + PI
+	enemy_projectile.direction = dir
+	
+func movement() -> void:
+	
+	var direction
+	
+	if player == null:
+		direction = global_position
+	else:
+		direction = global_position - player.global_position
+	
+	if state == States.Walk:
+		if not floor_check_right.is_colliding():
+			current_speed = -SPEED
+		if not floor_check_left.is_colliding():
+			current_speed = SPEED
+		if wall_check_right.is_colliding():
+			current_speed = -SPEED
+		if wall_check_left.is_colliding():
+			current_speed = SPEED
+	if state == States.Chase:
+		if player_in_sight == true:
+			if direction.x < 0:
+				current_speed = CHASE_SPEED
+			else:
+				current_speed = -CHASE_SPEED
+	
+	velocity.x = current_speed
+	animated_sprite_2d.flip_h = velocity.x < 0
+
+
+func _physics_process(delta):
+	check_player()
+	player_vision()
+	track_player()
+	aim_at_player()
+	_check_aim()
+	movement()
+	update_healthbar()
+	move_and_slide()
+	
+	if not is_on_floor():
+		velocity.y += gravity * delta
+
+func animation() -> void:
+	if state == States.Walk:
+		animated_sprite_2d.play(\"walk\")
+	elif state == States.Chase:
+		animated_sprite_2d.play(\"chase\")
+	
+func update_healthbar() -> void:
+	var healthbar = $healthbar
+	healthbar.value = enemyhealthPoints
+	healthbar.visible = true
+	
+func take_damage() -> void:
+	if can_take_dmg:
+		if enemyhealthPoints > 0:
+			enemyhealthPoints -= damage
+			if enemyhealthPoints <= 0:
+				enemy_is_alive = false
+				if not enemy_is_alive:
+					var death_instance = death_eff.instantiate() as Node2D
+					death_instance.global_position = global_position
+					get_parent().add_child(death_instance)
+					queue_free()
+					print(\"enemy is dead\")
+			elif enemyhealthPoints > 0:
+				print(enemyhealthPoints)
+
+func _on_area_2d_area_entered(area):
+	print(\"Projectile has hit enemy\")
+	damage = 3 
+	take_damage()
+	
+func _on_shoot_timer_timeout():
+	_shoot()
+
+func check_player():
+	if player == null:
+		queue_free()
+"
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_nu6pr"]
+height = 31.4286
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jw534"]
+atlas = ExtResource("1_xeftq")
+region = Rect2(0, 0, 32, 36)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qvsul"]
+atlas = ExtResource("1_xeftq")
+region = Rect2(32, 0, 32, 36)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_86vuh"]
+atlas = ExtResource("1_xeftq")
+region = Rect2(64, 0, 32, 36)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dqila"]
+atlas = ExtResource("1_xeftq")
+region = Rect2(96, 0, 32, 36)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_q6dt0"]
+atlas = ExtResource("1_xeftq")
+region = Rect2(128, 0, 32, 36)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_f7dy0"]
+atlas = ExtResource("1_xeftq")
+region = Rect2(160, 0, 32, 36)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_08aw3"]
+atlas = ExtResource("1_xeftq")
+region = Rect2(0, 0, 32, 36)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_s3dn1"]
+atlas = ExtResource("1_xeftq")
+region = Rect2(32, 0, 32, 36)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_iab0n"]
+atlas = ExtResource("1_xeftq")
+region = Rect2(64, 0, 32, 36)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8j1mm"]
+atlas = ExtResource("1_xeftq")
+region = Rect2(96, 0, 32, 36)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_63tv0"]
+atlas = ExtResource("1_xeftq")
+region = Rect2(128, 0, 32, 36)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gy8dh"]
+atlas = ExtResource("1_xeftq")
+region = Rect2(160, 0, 32, 36)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_mdf2p"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jw534")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qvsul")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_86vuh")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dqila")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_q6dt0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_f7dy0")
+}],
+"loop": true,
+"name": &"chase",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_08aw3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_s3dn1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_iab0n")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8j1mm")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_63tv0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gy8dh")
+}],
+"loop": true,
+"name": &"walk",
+"speed": 5.0
+}]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_0ca4q"]
+height = 32.0
+
+[node name="punk" type="CharacterBody2D" groups=["Enemy"]]
+z_index = 99
+scale = Vector2(1.4, 1.4)
+collision_layer = 8
+script = SubResource("GDScript_yd1w5")
+projectile = ExtResource("1_5s3rd")
+
+[node name="Area2D" type="Area2D" parent="."]
+collision_layer = 9
+collision_mask = 16
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(0, 2.14286)
+shape = SubResource("CapsuleShape2D_nu6pr")
+debug_color = Color(0.905882, 0, 0.745098, 0.419608)
+
+[node name="Sprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(-2.86986e-42, -6.77626e-21)
+sprite_frames = SubResource("SpriteFrames_mdf2p")
+animation = &"walk"
+frame_progress = 0.99182
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-1.19209e-07, 2.14286)
+shape = SubResource("CapsuleShape2D_0ca4q")
+
+[node name="wall_check" type="Node2D" parent="."]
+
+[node name="wall_check_left" type="RayCast2D" parent="wall_check"]
+rotation = 0.014641
+target_position = Vector2(-30, 2.08165e-12)
+
+[node name="wall_check_right" type="RayCast2D" parent="wall_check"]
+rotation = 0.000170603
+target_position = Vector2(30, 2.08165e-12)
+
+[node name="floor_check" type="Node2D" parent="."]
+
+[node name="floor_check_left" type="RayCast2D" parent="floor_check"]
+position = Vector2(-22, 0)
+target_position = Vector2(2.08165e-12, 30)
+
+[node name="floor_check_right" type="RayCast2D" parent="floor_check"]
+position = Vector2(22, 0)
+target_position = Vector2(2.08165e-12, 30)
+
+[node name="player_tracker" type="Node2D" parent="."]
+
+[node name="visibilitiy_range" type="RayCast2D" parent="player_tracker"]
+target_position = Vector2(154.286, 0)
+collision_mask = 2
+
+[node name="player_aim" type="Node2D" parent="."]
+
+[node name="aim" type="RayCast2D" parent="player_aim"]
+target_position = Vector2(144.286, 0)
+collision_mask = 3075
+
+[node name="timer" type="Node" parent="."]
+
+[node name="chase_timer" type="Timer" parent="timer"]
+
+[node name="shoot_timer" type="Timer" parent="timer"]
+
+[node name="healthbar" type="ProgressBar" parent="."]
+modulate = Color(0, 0.701961, 0.333333, 1)
+offset_left = -15.7143
+offset_top = -27.8571
+offset_right = 304.286
+offset_bottom = 32.1429
+scale = Vector2(0.1, 0.1)
+max_value = 10.0
+step = 0.1
+value = 10.0
+show_percentage = false
+
+[node name="danger_notifier" parent="." instance=ExtResource("3_yxk2i")]
+visible = false
+position = Vector2(-7.85714, -50.7143)
+
+[connection signal="area_entered" from="Area2D" to="." method="_on_area_2d_area_entered"]
+[connection signal="timeout" from="timer/shoot_timer" to="." method="_on_shoot_timer_timeout"]

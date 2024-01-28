@@ -1,0 +1,60 @@
+[gd_scene load_steps=9 format=3 uid="uid://biucawdti4lif"]
+
+[ext_resource type="Script" path="res://scenes/game_scenes/Hazards/acid_pool.gd" id="1_vk0a0"]
+[ext_resource type="Texture2D" uid="uid://dk8ox8p7loav3" path="res://assets/Environment/Area Hazards/Acid-Sheet.png" id="2_gbpl1"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8oo8f"]
+atlas = ExtResource("2_gbpl1")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_afvje"]
+atlas = ExtResource("2_gbpl1")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ftlmm"]
+atlas = ExtResource("2_gbpl1")
+region = Rect2(64, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_brkl0"]
+atlas = ExtResource("2_gbpl1")
+region = Rect2(96, 0, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_gwfqk"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8oo8f")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_afvje")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ftlmm")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_brkl0")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hhadl"]
+size = Vector2(16, 12)
+
+[node name="acid" type="Area2D" groups=["Hazards"]]
+collision_layer = 64
+collision_mask = 2
+script = ExtResource("1_vk0a0")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(0, -8)
+scale = Vector2(0.5, 0.5)
+sprite_frames = SubResource("SpriteFrames_gwfqk")
+autoplay = "default"
+frame_progress = 0.266885
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -6)
+shape = SubResource("RectangleShape2D_hhadl")
+debug_color = Color(0.760784, 0.45098, 0, 0.419608)

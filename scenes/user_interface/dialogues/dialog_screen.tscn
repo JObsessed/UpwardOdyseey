@@ -1,0 +1,62 @@
+[gd_scene load_steps=5 format=3 uid="uid://c4gmttgn7e4i0"]
+
+[ext_resource type="Script" path="res://scenes/user_interface/dialogues/dialog_screen.gd" id="1_oq7lx"]
+[ext_resource type="AudioStream" uid="uid://cdnd0u3cfljyj" path="res://assets/Music & Sounds/sfx/mouse_click.mp3" id="2_mh2im"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_np1mi"]
+bg_color = Color(0.627451, 0, 0.627451, 0.686275)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 0.866667, 0.988235, 0.713726)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="SystemFont" id="SystemFont_pvd6j"]
+font_names = PackedStringArray("Krungthep")
+
+[node name="DialogScreen" type="Node2D"]
+script = ExtResource("1_oq7lx")
+
+[node name="Panel" type="Panel" parent="."]
+offset_top = -135.0
+offset_right = 163.0
+offset_bottom = -58.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_np1mi")
+
+[node name="Name" type="RichTextLabel" parent="Panel"]
+layout_mode = 0
+offset_left = 8.0
+offset_top = 8.0
+offset_right = 72.0
+offset_bottom = 32.0
+theme_override_fonts/normal_font = SubResource("SystemFont_pvd6j")
+theme_override_font_sizes/normal_font_size = 8
+text = "Name"
+
+[node name="Text" type="RichTextLabel" parent="Panel"]
+layout_mode = 0
+offset_left = 6.0
+offset_top = 26.0
+offset_right = 155.0
+offset_bottom = 69.0
+theme_override_fonts/normal_font = SubResource("SystemFont_pvd6j")
+theme_override_font_sizes/normal_font_size = 7
+text = "Text"
+
+[node name="Label" type="Label" parent="Panel"]
+layout_mode = 0
+offset_left = 20.0
+offset_top = 74.0
+offset_right = 144.0
+offset_bottom = 97.0
+theme_override_font_sizes/font_size = 8
+text = "press <<space>> to continue"
+
+[node name="chat_sound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("2_mh2im")
+volume_db = -20.0
+bus = &"SFX"

@@ -1,0 +1,36 @@
+[gd_scene load_steps=5 format=3 uid="uid://biwk5lspsdwuk"]
+
+[ext_resource type="Script" path="res://scripts/rope.gd" id="1_due7j"]
+[ext_resource type="Texture2D" uid="uid://dj2ls5detduxk" path="res://assets/Character/Grappling_Hook/link.png" id="1_m0kdl"]
+[ext_resource type="Texture2D" uid="uid://cxnjfne62cgbo" path="res://assets/Character/Grappling_Hook/hook.png" id="2_iqe3h"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_lyj3p"]
+radius = 3.0
+
+[node name="rope" type="Node2D"]
+script = ExtResource("1_due7j")
+bolt_speed = 30
+
+[node name="rope_elements" type="Sprite2D" parent="."]
+texture_repeat = 2
+position = Vector2(0, -9.88556)
+scale = Vector2(0.2, 0.906111)
+texture = ExtResource("1_m0kdl")
+centered = false
+offset = Vector2(-8, 14)
+region_enabled = true
+region_rect = Rect2(2.08165e-12, 2.08165e-12, 16, 360)
+
+[node name="bolt" type="CharacterBody2D" parent="."]
+scale = Vector2(0.5, 0.5)
+collision_layer = 4
+
+[node name="bolt_sprite" type="Sprite2D" parent="bolt"]
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("2_iqe3h")
+offset = Vector2(2.08165e-12, 8)
+flip_h = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="bolt"]
+position = Vector2(0, 16)
+shape = SubResource("CapsuleShape2D_lyj3p")

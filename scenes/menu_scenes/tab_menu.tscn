@@ -1,0 +1,133 @@
+[gd_scene load_steps=6 format=3 uid="uid://cw03xv8nidfx4"]
+
+[ext_resource type="PackedScene" uid="uid://ccwlv0wl2cc44" path="res://scenes/menu_scenes/graphic options/window_size_button.tscn" id="1_5on7d"]
+[ext_resource type="PackedScene" uid="uid://cp6t87k8yhh3x" path="res://scenes/menu_scenes/input_menu_button.tscn" id="1_54l87"]
+[ext_resource type="PackedScene" uid="uid://dj4jb18qqnypp" path="res://scenes/menu_scenes/audio options/volume_slider.tscn" id="1_303hc"]
+[ext_resource type="PackedScene" uid="uid://dvcqrsrp5qti5" path="res://scenes/menu_scenes/graphic options/resolution_button.tscn" id="2_nrlem"]
+
+[sub_resource type="SystemFont" id="SystemFont_e2sur"]
+font_names = PackedStringArray("Krungthep")
+
+[node name="tab_menu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TabContainer" type="TabContainer" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 100.0
+offset_top = 50.0
+offset_right = -100.0
+offset_bottom = -50.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = SubResource("SystemFont_e2sur")
+tab_alignment = 1
+current_tab = 2
+
+[node name="Music" type="TabBar" parent="TabContainer"]
+visible = false
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="TabContainer/Music"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 24
+theme_override_constants/margin_top = 24
+theme_override_constants/margin_right = 24
+theme_override_constants/margin_bottom = 24
+
+[node name="ScrollContainer" type="ScrollContainer" parent="TabContainer/Music/MarginContainer"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="TabContainer/Music/MarginContainer/ScrollContainer"]
+layout_mode = 2
+theme_override_constants/separation = 80
+alignment = 1
+
+[node name="Volume_Slider" parent="TabContainer/Music/MarginContainer/ScrollContainer/VBoxContainer" instance=ExtResource("1_303hc")]
+layout_mode = 2
+
+[node name="Volume_Slider2" parent="TabContainer/Music/MarginContainer/ScrollContainer/VBoxContainer" instance=ExtResource("1_303hc")]
+layout_mode = 2
+audiobus_name = "Music"
+
+[node name="Volume_Slider3" parent="TabContainer/Music/MarginContainer/ScrollContainer/VBoxContainer" instance=ExtResource("1_303hc")]
+layout_mode = 2
+audiobus_name = "SFX"
+
+[node name="Graphic" type="TabBar" parent="TabContainer"]
+visible = false
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="TabContainer/Graphic"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 24
+theme_override_constants/margin_top = 24
+theme_override_constants/margin_right = 24
+theme_override_constants/margin_bottom = 24
+
+[node name="ScrollContainer" type="ScrollContainer" parent="TabContainer/Graphic/MarginContainer"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="TabContainer/Graphic/MarginContainer/ScrollContainer"]
+layout_mode = 2
+theme_override_constants/separation = 80
+
+[node name="windowSize_button" parent="TabContainer/Graphic/MarginContainer/ScrollContainer/VBoxContainer" instance=ExtResource("1_5on7d")]
+layout_mode = 2
+
+[node name="resolution_button" parent="TabContainer/Graphic/MarginContainer/ScrollContainer/VBoxContainer" instance=ExtResource("2_nrlem")]
+layout_mode = 2
+
+[node name="Gameplay" type="TabBar" parent="TabContainer"]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="TabContainer/Gameplay"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 24
+theme_override_constants/margin_top = 24
+theme_override_constants/margin_right = 24
+theme_override_constants/margin_bottom = 24
+
+[node name="ScrollContainer" type="ScrollContainer" parent="TabContainer/Gameplay/MarginContainer"]
+clip_contents = false
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="TabContainer/Gameplay/MarginContainer/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 80
+
+[node name="input_menu_button" parent="TabContainer/Gameplay/MarginContainer/ScrollContainer/VBoxContainer" instance=ExtResource("1_54l87")]
+layout_direction = 2
+layout_mode = 2
+
+[node name="input_menu_button2" parent="TabContainer/Gameplay/MarginContainer/ScrollContainer/VBoxContainer" instance=ExtResource("1_54l87")]
+layout_mode = 2
+input_key_name = "ui_right"
+
+[node name="input_menu_button3" parent="TabContainer/Gameplay/MarginContainer/ScrollContainer/VBoxContainer" instance=ExtResource("1_54l87")]
+layout_mode = 2
+input_key_name = "jump"

@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://bcujt80wb6p0e"
+path="res://.godot/imported/shooting_sound.mp3-c1c6288ff14c2f03d93d862e3a2223f9.mp3str"
+
+[deps]
+
+source_file="res://assets/Music & Sounds/sfx/shooting_sound.mp3"
+dest_files=["res://.godot/imported/shooting_sound.mp3-c1c6288ff14c2f03d93d862e3a2223f9.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

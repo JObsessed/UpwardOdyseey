@@ -1,0 +1,745 @@
+[gd_scene load_steps=64 format=3 uid="uid://b1wakm21xgkoy"]
+
+[ext_resource type="Shader" uid="uid://djehx483lvld" path="res://scenes/game_scenes/Effects/player_hit_effect.tres" id="1_snal7"]
+[ext_resource type="Texture2D" uid="uid://1nl7cvmnf4vf" path="res://assets/Character/Sprites/Armless_Jump_Off.png" id="2_th0y3"]
+[ext_resource type="Texture2D" uid="uid://djr27gwicbop8" path="res://assets/Character/Sprites/Armless_Airtime.png" id="3_prg0a"]
+[ext_resource type="Texture2D" uid="uid://inc66hah42e8" path="res://assets/Character/Sprites/Armless_Idle.png" id="4_4j4tb"]
+[ext_resource type="Texture2D" uid="uid://vyx4tja37att" path="res://assets/Character/Sprites/Armless_Landing.png" id="5_3783m"]
+[ext_resource type="Texture2D" uid="uid://cvaq1r7cslh4b" path="res://assets/Character/Sprites/Armless_Run.png" id="6_8hoxk"]
+[ext_resource type="PackedScene" uid="uid://csk48o7vvu5g1" path="res://scenes/game_scenes/connection_handler.tscn" id="7_2ji5t"]
+[ext_resource type="Texture2D" uid="uid://8oo7lqwfyvll" path="res://assets/Character/Sprites/gunarm.png" id="8_3nx8h"]
+[ext_resource type="PackedScene" uid="uid://biwk5lspsdwuk" path="res://scenes/game_scenes/player_scenes/rope.tscn" id="9_cvjwa"]
+[ext_resource type="PackedScene" uid="uid://d20sojylpw3lg" path="res://scenes/hitbox/hitbox.tscn" id="10_8yovw"]
+[ext_resource type="AudioStream" uid="uid://bcujt80wb6p0e" path="res://assets/Music & Sounds/sfx/shooting_sound.mp3" id="11_es4vs"]
+[ext_resource type="AudioStream" uid="uid://crkpbsfxc7etc" path="res://assets/Music & Sounds/sfx/rope.mp3" id="12_if1hd"]
+[ext_resource type="AudioStream" uid="uid://dnb0l1hd1jnpt" path="res://assets/Music & Sounds/sfx/running_sound_1.mp3" id="12_nn82v"]
+
+[sub_resource type="GDScript" id="GDScript_huxeg"]
+script/source = "class_name PlayerEntity
+extends CharacterBody2D
+
+@export var speed : float = 175.0
+@export var jump_velocity : float = -200.0
+@export var double_jump_velocity : float = -150.0
+
+@onready var animated_sprite : AnimatedSprite2D = $AnimatedSprite2D
+@onready var hit_animation_player : AnimationPlayer = $HitAnimationPlayer
+@onready var hit_animation_gunarm : AnimationPlayer = $HitAnimationGunarm
+
+var player_death_effect = preload(\"res://scenes/game_scenes/Effects/player_death_effect.tscn\")
+
+# Get the gravity from the project settings to be synced with RigidBody nodes.
+var gravity = ProjectSettings.get_setting(\"physics/2d/default_gravity\")
+var has_double_jumped : bool = false
+var animation_locked : bool = false
+var direction : Vector2 = Vector2.ZERO
+var airtime : bool = false
+var hook_pull = 15
+var hook_velo = Vector2(0,0)
+
+var looking_dir = true # True steht für rechts, false für links
+var old_looking_dir = true
+
+func _physics_process(delta):
+
+	if not is_on_floor():
+		velocity.y += gravity * delta
+		airtime = true
+	else:
+		has_double_jumped = false
+		if airtime == true:
+			landing()
+		airtime = false
+
+	# Handle Jump.
+	if Input.is_action_just_pressed(\"jump\"):
+		if is_on_floor():
+			jump()
+		elif not has_double_jumped:
+			double_jump()
+			
+	#Grappling Hook
+	if $rope.is_hooked:
+		hook_velo = to_local($rope.bolt_pos).normalized() * hook_pull
+		if hook_velo.y > 0:
+			hook_velo.y *= 0.5
+		else:
+			hook_velo.y *= 1.25
+		if looking_dir:
+			pass
+		else:
+			hook_velo.x = abs(hook_velo.x)
+	else: #not is_hooked
+		hook_velo = Vector2(0,0)
+	velocity += hook_velo
+	
+	# Get the input direction and handle the movement/deceleration.
+	# As good practice, you should replace UI actions with custom gameplay actions.
+	direction = Input.get_vector(\"ui_left\", \"ui_right\", \"jump\", \"ui_down\")
+	
+	if !$rope.is_hooked:
+		if direction.x != 0:
+			velocity.x = direction.x * speed
+		else:
+			velocity.x = move_toward(velocity.x, 0, speed)
+			
+
+			
+			
+	move_and_slide()
+	animation()
+	sfx()
+	update_facing_direction()
+	depth_check()
+	
+func animation():
+	if not animation_locked:
+		if not is_on_floor():
+			animated_sprite.play(\"falling\")
+			$gunArm.state = 2
+		else:
+			if direction.x != 0:
+				animated_sprite.play(\"run\")
+				$gunArm.state = 1
+			else:
+				animated_sprite.play(\"idle\")
+#				animated_sprite.play(\"test_frame\")
+				$gunArm.state = 0
+
+func update_facing_direction():
+	# flipt den Körper immer in die Richtung auf der die Maus ist.
+	looking_dir = (self.get_global_position().x - get_global_mouse_position().x) > 0
+	if looking_dir != old_looking_dir:
+		self.scale.x = -1
+		old_looking_dir = looking_dir
+	$gunArm/Gunarm.flip = looking_dir
+		 
+func jump():
+	velocity.y = jump_velocity
+	$gunArm.state = -1
+	animated_sprite.play(\"jump_off\")
+	animation_locked = true
+	
+func double_jump():
+	velocity.y = double_jump_velocity
+	animated_sprite.play(\"double_jump\")
+	animation_locked = true
+	has_double_jumped = true
+
+func landing():
+	animated_sprite.play(\"landing\")
+	$gunArm.state = -1
+	animation_locked = true
+
+func _input(event: InputEvent) -> void:
+	if event is InputEventMouseButton:
+		if event.button_index == MOUSE_BUTTON_LEFT:
+			if event.pressed:
+				$rope.shoot_grappling_hook(self.get_global_position().direction_to(get_global_mouse_position()))
+				$rope_sfx.play()
+			else:
+				$rope.release_grappling_hook()
+	
+	if Input.is_action_just_pressed(\"shoot\"):
+		var _projectile = load(\"res://scenes/game_scenes/player_scenes/projectile.tscn\").instantiate()
+		_projectile.set_global_position(self.get_global_position())
+		print(get_angle_to(get_global_mouse_position()))
+		var _rotation = get_angle_to(get_global_mouse_position())
+		if !looking_dir:
+			_rotation += deg_to_rad(180)
+		_projectile.rotation = _rotation
+		get_parent().add_child(_projectile)
+		print(\"Pow\")
+		$shoot_sfx.play()
+	
+func _on_animated_sprite_2d_animation_finished():
+	if([\"landing\", \"jump_off\", \"double_jump\"].has(animated_sprite.animation)):
+		animation_locked = false
+
+func _on_hitbox_body_entered(body : Node2D):
+	if body.is_in_group(\"Enemy\"):
+		print(\"Enemy detected \", body.base_damage)
+		hit_animation_player.play(\"hit\")
+		hit_animation_gunarm.play(\"hit\")
+		HealthManager.decrease_health(body.base_damage)
+	
+func _on_hitbox_area_entered(area : Node2D):
+	if area.is_in_group(\"Hazards\"):
+		print(\"Hazard detected\", area.base_damage)
+		hit_animation_player.play(\"hit\")
+		hit_animation_gunarm.play(\"hit\")
+		HealthManager.decrease_health(area.base_damage)	
+	elif area.is_in_group(\"Enemy Projectile\"):
+		print(\"Enemy Projectile detected\", area.base_damage)
+		hit_animation_player.play(\"hit\")
+		hit_animation_gunarm.play(\"hit\")
+		HealthManager.decrease_health(area.base_damage)
+
+	if HealthManager.curr_health == 0:
+		player_death()
+
+func player_death():
+	var player_death_effect_instance = player_death_effect.instantiate() as Node2D
+	player_death_effect_instance.global_position = global_position
+	get_parent().add_child(player_death_effect_instance)
+	queue_free()
+
+func sfx() -> void:
+	
+	if Input.is_action_just_pressed(\"ui_left\") or Input.is_action_just_pressed(\"ui_right\"):
+		$running_sfx.play()
+	if Input.is_action_just_released(\"ui_left\") or Input.is_action_just_released(\"ui_right\"):
+		$running_sfx.stop()
+	if not is_on_floor():
+		$running_sfx.stop()
+		
+func depth_check() -> void:
+	if position.y >= 1650:
+		player_death()
+	
+"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_yws0x"]
+shader = ExtResource("1_snal7")
+shader_parameter/enabled = false
+shader_parameter/ColorParameter = Color(0.854902, 0, 0, 1)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2fy08"]
+atlas = ExtResource("2_th0y3")
+region = Rect2(128, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6ffk8"]
+atlas = ExtResource("2_th0y3")
+region = Rect2(192, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lbt1j"]
+atlas = ExtResource("3_prg0a")
+region = Rect2(384, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pbkb6"]
+atlas = ExtResource("3_prg0a")
+region = Rect2(448, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ve3n6"]
+atlas = ExtResource("3_prg0a")
+region = Rect2(512, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_y4mru"]
+atlas = ExtResource("3_prg0a")
+region = Rect2(576, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xkd24"]
+atlas = ExtResource("3_prg0a")
+region = Rect2(640, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mwu6d"]
+atlas = ExtResource("3_prg0a")
+region = Rect2(704, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_j8nme"]
+atlas = ExtResource("4_4j4tb")
+region = Rect2(0, 0, 64, 80)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_865xc"]
+atlas = ExtResource("4_4j4tb")
+region = Rect2(64, 0, 64, 80)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lyds0"]
+atlas = ExtResource("4_4j4tb")
+region = Rect2(128, 0, 64, 80)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0k2r6"]
+atlas = ExtResource("4_4j4tb")
+region = Rect2(192, 0, 64, 80)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_k870b"]
+atlas = ExtResource("2_th0y3")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_atv6o"]
+atlas = ExtResource("2_th0y3")
+region = Rect2(64, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cocyf"]
+atlas = ExtResource("2_th0y3")
+region = Rect2(128, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mtb0n"]
+atlas = ExtResource("2_th0y3")
+region = Rect2(192, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0qav0"]
+atlas = ExtResource("3_prg0a")
+region = Rect2(256, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_u6v6a"]
+atlas = ExtResource("3_prg0a")
+region = Rect2(320, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cua0b"]
+atlas = ExtResource("3_prg0a")
+region = Rect2(384, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_iwaw2"]
+atlas = ExtResource("3_prg0a")
+region = Rect2(448, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jbvls"]
+atlas = ExtResource("3_prg0a")
+region = Rect2(512, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ccx5t"]
+atlas = ExtResource("3_prg0a")
+region = Rect2(576, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_uok3e"]
+atlas = ExtResource("3_prg0a")
+region = Rect2(640, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ki6o3"]
+atlas = ExtResource("3_prg0a")
+region = Rect2(704, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8tcpd"]
+atlas = ExtResource("5_3783m")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wxhu3"]
+atlas = ExtResource("5_3783m")
+region = Rect2(64, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kp85x"]
+atlas = ExtResource("5_3783m")
+region = Rect2(128, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7g30x"]
+atlas = ExtResource("6_8hoxk")
+region = Rect2(80, 0, 80, 80)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8yeea"]
+atlas = ExtResource("6_8hoxk")
+region = Rect2(0, 0, 80, 80)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_33r74"]
+atlas = ExtResource("6_8hoxk")
+region = Rect2(160, 0, 80, 80)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fljb4"]
+atlas = ExtResource("6_8hoxk")
+region = Rect2(240, 0, 80, 80)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_t18fl"]
+atlas = ExtResource("6_8hoxk")
+region = Rect2(320, 0, 80, 80)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_p5hgx"]
+atlas = ExtResource("6_8hoxk")
+region = Rect2(400, 0, 80, 80)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_iae76"]
+atlas = ExtResource("6_8hoxk")
+region = Rect2(480, 0, 80, 80)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_chuhr"]
+atlas = ExtResource("6_8hoxk")
+region = Rect2(560, 0, 80, 80)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_p66jn"]
+atlas = ExtResource("5_3783m")
+region = Rect2(128, 0, 64, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_qer64"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2fy08")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6ffk8")
+}],
+"loop": false,
+"name": &"double_jump",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_lbt1j")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_pbkb6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ve3n6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_y4mru")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xkd24")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mwu6d")
+}],
+"loop": false,
+"name": &"falling",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_j8nme")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_865xc")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_lyds0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0k2r6")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_k870b")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_atv6o")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cocyf")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mtb0n")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0qav0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_u6v6a")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cua0b")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_iwaw2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jbvls")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ccx5t")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_uok3e")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ki6o3")
+}],
+"loop": false,
+"name": &"jump_off",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8tcpd")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wxhu3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_kp85x")
+}],
+"loop": false,
+"name": &"landing",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7g30x")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8yeea")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_33r74")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fljb4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_t18fl")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_p5hgx")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_iae76")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_chuhr")
+}],
+"loop": true,
+"name": &"run",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_p66jn")
+}],
+"loop": true,
+"name": &"test_frame",
+"speed": 5.0
+}]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_0ksls"]
+radius = 7.0
+height = 44.0
+
+[sub_resource type="GDScript" id="GDScript_turjo"]
+script/source = "extends Node2D
+
+var positions = [Vector2(-0,-6),Vector2(-2,-3),Vector2(-10,-13)]
+
+var state = 0
+
+
+func _ready():
+	pass # Replace with function body.
+
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+func _process(delta):
+	if state != -1:
+		$Gunarm.position = positions[state]
+	
+	else:
+		if $\"../AnimatedSprite2D\".animation == \"test_frame\":
+			$Gunarm.position = Vector2(-8,1)
+
+		if $\"../AnimatedSprite2D\".animation == \"jump_off\":
+
+			if $\"../AnimatedSprite2D\".frame == 0:
+				$Gunarm.position = Vector2(-10,9)
+			if $\"../AnimatedSprite2D\".frame == 1:
+				$Gunarm.position = Vector2(-10,2)
+			if $\"../AnimatedSprite2D\".frame >= 2:
+				$Gunarm.position = positions[2] - Vector2(0,2)
+		
+		if $\"../AnimatedSprite2D\".animation == \"landing\":
+
+			if $\"../AnimatedSprite2D\".frame == 0:
+				$Gunarm.position = positions[2]
+			if $\"../AnimatedSprite2D\".frame == 1:
+				$Gunarm.position = Vector2(-8,2)
+			if $\"../AnimatedSprite2D\".frame == 2:
+				$Gunarm.position =  Vector2(-8,2)
+
+
+
+func flip():
+	$\".\".scale.x = -1
+"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_d44by"]
+shader = ExtResource("1_snal7")
+shader_parameter/enabled = false
+shader_parameter/ColorParameter = Color(0.854902, 0, 0, 1)
+
+[sub_resource type="GDScript" id="GDScript_up3g7"]
+script/source = "extends Sprite2D
+
+
+@export var flip = false
+@export var can_fire = true
+
+var projectile = preload(\"res://scenes/game_scenes/player_scenes/projectile.tscn\")
+
+# Called when the node enters the scene tree for the first time.
+#func _ready():
+	#set_as_top_level(true)
+
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+func _process(delta):
+#	self.rotation = get_angle_to(get_global_mouse_position())
+#	self.rotation_degrees = abs(get_angle_to(get_global_mouse_position()) * 180 / PI)
+	var delta_x = (self.get_global_position().x - get_global_mouse_position().x)
+	var delty_y = (self.get_global_position().y - get_global_mouse_position().y)
+	
+	if delta_x != 0:
+		if flip:
+			self.rotation_degrees = atan(delty_y/delta_x) * 180 / PI * -1
+		else:
+			self.rotation_degrees = atan(delty_y/delta_x) * 180 / PI 
+
+	var mouse_position = get_global_mouse_position()
+	
+#	if Input.is_action_pressed(\"shoot\"):
+#		var projectile_instance = projectile.instantiate()
+#		#projectile_instance.roation = rotation
+#		projectile_instance.global_position = $Marker2D.global_position
+#		get_parent().add_child(projectile_instance) #mehrere Kugeln
+
+"
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_cmpnk"]
+radius = 7.0
+height = 42.0
+
+[sub_resource type="Animation" id="Animation_520m6"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("gunArm/Gunarm:material:shader_parameter/enabled")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
+[sub_resource type="Animation" id="Animation_k17l0"]
+resource_name = "hit"
+length = 0.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("gunArm/Gunarm:material:shader_parameter/enabled")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_vbx00"]
+_data = {
+"RESET": SubResource("Animation_520m6"),
+"hit": SubResource("Animation_k17l0")
+}
+
+[sub_resource type="Animation" id="Animation_h0l4c"]
+resource_name = "hit"
+length = 0.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatedSprite2D:material:shader_parameter/enabled")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+
+[sub_resource type="Animation" id="Animation_v8vh1"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatedSprite2D:material:shader_parameter/enabled")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_0nrmo"]
+_data = {
+"RESET": SubResource("Animation_v8vh1"),
+"hit": SubResource("Animation_h0l4c")
+}
+
+[node name="Player" type="CharacterBody2D" groups=["player"]]
+collision_layer = 2
+collision_mask = 3105
+script = SubResource("GDScript_huxeg")
+metadata/_edit_vertical_guides_ = [1151.0]
+metadata/_edit_horizontal_guides_ = [650.0]
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+material = SubResource("ShaderMaterial_yws0x")
+position = Vector2(-35, -40)
+sprite_frames = SubResource("SpriteFrames_qer64")
+animation = &"idle"
+autoplay = "idle"
+centered = false
+flip_h = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 2)
+shape = SubResource("CapsuleShape2D_0ksls")
+
+[node name="Connection_Handler" parent="." instance=ExtResource("7_2ji5t")]
+position = Vector2(-3, 0)
+
+[node name="gunArm" type="Node2D" parent="."]
+scale = Vector2(-1, 1)
+script = SubResource("GDScript_turjo")
+
+[node name="Gunarm" type="Sprite2D" parent="gunArm"]
+material = SubResource("ShaderMaterial_d44by")
+position = Vector2(-1.03265, -4.87328)
+rotation = 1.78024
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("8_3nx8h")
+offset = Vector2(22, 6)
+script = SubResource("GDScript_up3g7")
+
+[node name="Marker2D" type="Marker2D" parent="gunArm/Gunarm"]
+position = Vector2(51.1518, 13.1629)
+gizmo_extents = 28.6
+
+[node name="rope" parent="." instance=ExtResource("9_cvjwa")]
+
+[node name="hitbox" parent="." instance=ExtResource("10_8yovw")]
+collision_layer = 2
+collision_mask = 4168
+
+[node name="CollisionShape2D" parent="hitbox" index="0"]
+position = Vector2(-3, 0)
+shape = SubResource("CapsuleShape2D_cmpnk")
+debug_color = Color(0.901961, 0, 0.752941, 0.419608)
+
+[node name="shoot_sfx" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("11_es4vs")
+volume_db = -6.0
+bus = &"SFX"
+
+[node name="running_sfx" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("12_nn82v")
+volume_db = 10.0
+bus = &"SFX"
+
+[node name="rope_sfx" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("12_if1hd")
+bus = &"SFX"
+
+[node name="HitAnimationGunarm" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_vbx00")
+}
+
+[node name="HitAnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_0nrmo")
+}
+
+[connection signal="animation_finished" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]
+[connection signal="area_entered" from="hitbox" to="." method="_on_hitbox_area_entered"]
+[connection signal="body_entered" from="hitbox" to="." method="_on_hitbox_body_entered"]
+
+[editable path="hitbox"]

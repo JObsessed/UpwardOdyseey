@@ -1,0 +1,155 @@
+[gd_scene load_steps=14 format=3 uid="uid://gf2a5l2ihkx2"]
+
+[ext_resource type="Texture2D" uid="uid://nlvft52xscnn" path="res://assets/NPC Modells/Biker/Biker_idle.png" id="1_wll31"]
+[ext_resource type="PackedScene" uid="uid://c4gmttgn7e4i0" path="res://scenes/user_interface/dialogues/dialog_screen.tscn" id="2_p6sg0"]
+[ext_resource type="PackedScene" uid="uid://lgn2is5rxyu1" path="res://scenes/user_interface/dialogues/interaction_notifier.tscn" id="3_wmi2h"]
+[ext_resource type="AudioStream" uid="uid://cdnd0u3cfljyj" path="res://assets/Music & Sounds/sfx/mouse_click.mp3" id="4_dkhaj"]
+[ext_resource type="AudioStream" uid="uid://bi1ivocab54jr" path="res://assets/Music & Sounds/sfx/npc_voice.wav" id="5_rvouk"]
+
+[sub_resource type="GDScript" id="GDScript_yd1w5"]
+script/source = "class_name EnemyTemplate
+extends CharacterBody2D
+
+@onready var animated_sprite_2d = $Sprite2D as AnimatedSprite2D
+@onready var interaction_notifier = $interaction_notifier as Node2D
+@onready var dialogue_screen = $DialogScreen as Node2D
+@onready var chat_sound = $chat_sound as AudioStreamPlayer2D
+@onready var npc_gibberish = $npc_gibberish as AudioStreamPlayer2D
+
+@export var level_name : String
+
+# Get the gravity from the project settings to be synced with RigidBody nodes.
+var gravity = ProjectSettings.get_setting(\"physics/2d/default_gravity\")
+
+var player
+
+var is_in_dialogue = false
+var player_is_in_dialogue_area = false
+
+func _ready():
+	interaction_notifier.visible = false
+	player = get_tree().get_first_node_in_group(\"player\")
+	
+func _physics_process(delta):
+	
+	if not is_on_floor():
+		velocity.y += gravity * delta
+		
+	start_conversation()
+	move_and_slide()
+
+func _on_dialog_area_body_entered(body):
+	interaction_notifier.visible = true
+	if body.is_in_group(\"player\"):
+		player = body
+		player_is_in_dialogue_area = true
+		print(\"I can chat with you\")
+
+func _on_dialog_area_body_exited(body):
+	interaction_notifier.visible = false
+	player_is_in_dialogue_area = false
+	is_in_dialogue = false
+
+func _on_dialog_screen_end_dialog():
+	is_in_dialogue = false
+	
+func start_conversation() -> void:
+	if player_is_in_dialogue_area:
+		if Input.is_action_pressed(\"chat\"):
+			chat_sound.play()
+			npc_gibberish.play()
+			interaction_notifier.visible = false
+			is_in_dialogue = true
+			print(\"NPC is busy chatting\")
+			dialogue_screen.play_dialog(level_name)
+"
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_0ca4q"]
+radius = 11.4286
+height = 41.4286
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_00c3f"]
+size = Vector2(102.857, 40.7143)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3ep4x"]
+atlas = ExtResource("1_wll31")
+region = Rect2(0, 12, 48, 36)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mr34n"]
+atlas = ExtResource("1_wll31")
+region = Rect2(48, 12, 48, 36)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qj1ec"]
+atlas = ExtResource("1_wll31")
+region = Rect2(96, 12, 48, 36)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_q3asq"]
+atlas = ExtResource("1_wll31")
+region = Rect2(144, 12, 48, 36)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_y4uej"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3ep4x")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mr34n")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qj1ec")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_q3asq")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[node name="Greg" type="CharacterBody2D"]
+scale = Vector2(1.4, 1.4)
+collision_layer = 8
+script = SubResource("GDScript_yd1w5")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-8.47033e-22, -3.57143)
+shape = SubResource("CapsuleShape2D_0ca4q")
+
+[node name="Dialog_Area" type="Area2D" parent="."]
+collision_layer = 9
+collision_mask = 2
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Dialog_Area"]
+position = Vector2(0, -2.85714)
+shape = SubResource("RectangleShape2D_00c3f")
+debug_color = Color(0.905882, 0, 0.745098, 0.419608)
+
+[node name="DialogScreen" parent="." instance=ExtResource("2_p6sg0")]
+position = Vector2(-72.8571, 2.14286)
+
+[node name="interaction_notifier" parent="." instance=ExtResource("3_wmi2h")]
+position = Vector2(1.42858, 15)
+
+[node name="Sprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(-10.7143, -4.28571)
+rotation = 3.14159
+scale = Vector2(1.2, -1.2)
+sprite_frames = SubResource("SpriteFrames_y4uej")
+autoplay = "default"
+frame = 3
+frame_progress = 0.781946
+
+[node name="chat_sound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("4_dkhaj")
+volume_db = -24.0
+bus = &"SFX"
+
+[node name="npc_gibberish" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("5_rvouk")
+volume_db = -12.0
+bus = &"SFX"
+
+[connection signal="body_entered" from="Dialog_Area" to="." method="_on_dialog_area_body_entered"]
+[connection signal="body_exited" from="Dialog_Area" to="." method="_on_dialog_area_body_exited"]
+[connection signal="end_dialog" from="DialogScreen" to="." method="_on_dialog_screen_end_dialog"]

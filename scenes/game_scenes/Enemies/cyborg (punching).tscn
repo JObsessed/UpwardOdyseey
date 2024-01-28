@@ -1,0 +1,409 @@
+[gd_scene load_steps=20 format=3 uid="uid://ca6md28pwcqq7"]
+
+[ext_resource type="Texture2D" uid="uid://cbba4tepke32w" path="res://assets/NPC Modells/Cyborg/cyborg_spritesheet-export-finalt.png" id="1_y24x8"]
+[ext_resource type="PackedScene" uid="uid://br4asclxmeb6e" path="res://scenes/user_interface/danger_notifier.tscn" id="2_dp756"]
+
+[sub_resource type="GDScript" id="GDScript_yd1w5"]
+script/source = "class_name EnemyTemplate
+extends CharacterBody2D
+
+var death_eff = preload(\"res://scenes/game_scenes/Enemies/effects/enemy_death.tscn\")
+
+@onready var wall_check_left = $Node2D/wall_check/wall_check_left as RayCast2D
+@onready var wall_check_right = $Node2D/wall_check/wall_check_right as RayCast2D
+@onready var floor_check_left = $Node2D/floor_check/floor_check_left as RayCast2D
+@onready var floor_check_right = $Node2D/floor_check/floor_check_right as RayCast2D
+@onready var visibility_range = $player_tracker/visibilitiy_range as RayCast2D
+@onready var player_tracker = $player_tracker as Node2D
+@onready var chase_timer = $timer/chase_timer as Timer
+@onready var shoot_timer = $timer/shoot_timer as Timer
+@onready var state_machine = $AnimationTree.get('parameters/playback')
+@onready var sprite2D = $Sprite2D2 as Sprite2D
+
+
+const SPEED : float = 40.0
+const CHASE_SPEED : float = 80.0
+const JUMP_VELOCITY : float = -400.0
+
+# Get the gravity from the project settings to be synced with RigidBody nodes.
+var gravity = ProjectSettings.get_setting(\"physics/2d/default_gravity\")
+
+var current_speed : float = 0.0
+var player_in_sight : bool = false
+var player
+var player_track_dir : Vector2
+var player_aim_dir : Vector2
+
+#Leben- und Schadensberechnung:
+var enemy_is_alive : bool = true
+var enemyhealthPoints = 10
+var damage = 0
+var can_take_dmg = true
+var base_damage = 1
+var punch_damage = 1
+
+enum States {
+
+	Walk,
+	Chase,
+	Attack
+}
+
+var state = States.Walk
+
+
+func _ready():
+	current_speed = -40.0
+	player = get_tree().get_first_node_in_group(\"player\")
+	chase_timer.timeout.connect(on_timer_timeout)
+	state = States.Walk
+	state_machine.travel(\"Walk\")
+	$danger_notifier.visible = false
+
+func on_timer_timeout() -> void:
+	if not player_in_sight:
+		state = States.Walk
+
+func player_vision():
+	if visibility_range.is_colliding():
+		var collision = visibility_range.get_collider()
+		if collision != player:
+			return
+		else:
+			state = States.Chase
+			chase_timer.start(1)
+			player_in_sight = true
+			$danger_notifier.visible = true
+	else:
+		player_in_sight = false
+		$danger_notifier.visible = false
+
+func track_player():
+	if player == null:
+		return
+	
+	player_track_dir = Vector2(player.position.x, player.position.y - 8) - visibility_range.position
+	player_tracker.look_at(player_track_dir)
+	
+
+func movement() -> void:
+	
+	var direction
+	
+	if player == null:
+		direction = global_position
+	else:
+		direction = global_position - player.global_position
+	
+	if state == States.Walk:
+		if not floor_check_right.is_colliding():
+			current_speed = -SPEED
+		if not floor_check_left.is_colliding():
+			current_speed = SPEED
+		if wall_check_right.is_colliding():
+			current_speed = -SPEED
+		if wall_check_left.is_colliding():
+			current_speed = SPEED
+	if state == States.Chase:
+		if player_in_sight == true:
+			
+			if direction.x < 0:
+				current_speed = CHASE_SPEED
+			else:
+				current_speed = -CHASE_SPEED
+	
+	#print(direction.x)
+	velocity.x = current_speed
+	sprite2D.flip_h = velocity.x < 0
+
+func _physics_process(delta):
+	# Add the gravity.
+	player_vision()
+	track_player()
+	movement()
+	update_healthbar()
+	move_and_slide()
+	
+	if not is_on_floor():
+		velocity.y += gravity * delta
+
+	
+func update_healthbar() -> void:
+	var healthbar = $healthbar
+	healthbar.value = enemyhealthPoints
+	healthbar.visible = true
+	
+func take_damage() -> void:
+	if can_take_dmg:
+		if enemyhealthPoints > 0:
+			enemyhealthPoints -= damage
+			if enemyhealthPoints <= 0:
+				enemy_is_alive = false
+				if not enemy_is_alive:
+					var death_instance = death_eff.instantiate() as Node2D
+					death_instance.global_position = global_position
+					get_parent().add_child(death_instance)
+					queue_free()
+					print(\"enemy is dead\")
+			elif enemyhealthPoints > 0:
+				print(enemyhealthPoints)
+
+func _on_area_2d_area_entered(area):
+	print(\"Projectile has hit enemy\")
+	damage = 3 
+	take_damage()
+
+func attack() -> void:
+	$punch_area.monitoring = true
+	
+func end_attack() -> void:
+	$punch_area.monitoring = false
+	
+func _on_player_detector_body_entered(body):
+	if body.is_in_group(\"player\"):
+		state_machine.travel(\"Attack\")
+		velocity = Vector2.ZERO
+func _on_player_detector_body_exited(body):
+	state_machine.travel(\"Walk\")
+
+func _on_punch_area_body_entered(body):
+	if body.is_in_group(\"player\"):
+		HealthManager.decrease_health(punch_damage)
+		print(\"punch thrown\")
+"
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_sfjvj"]
+size = Vector2(87.143, 19.8215)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_e5fp5"]
+size = Vector2(57.8572, 20)
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_nu6pr"]
+height = 31.4286
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_0ca4q"]
+height = 47.1428
+
+[sub_resource type="Animation" id="Animation_xycal"]
+resource_name = "Attack"
+length = 0.77
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D2:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [6, 7, 8, 9, 10, 11, 12, 13]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Node2D/punch_area/CollisionShape2D:disabled")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.2, 0.4, 0.77),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [true, false, true]
+}
+
+[sub_resource type="Animation" id="Animation_hgwco"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D2:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Node2D/punch_area/CollisionShape2D:disabled")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
+[sub_resource type="Animation" id="Animation_2m3dk"]
+resource_name = "Walk"
+length = 0.58
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D2:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4, 5]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_m1qjx"]
+_data = {
+"Attack": SubResource("Animation_xycal"),
+"RESET": SubResource("Animation_hgwco"),
+"Walk": SubResource("Animation_2m3dk")
+}
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_nvx8r"]
+animation = &"Attack"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_804j3"]
+animation = &"Walk"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_xg2qd"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_ov1h7"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_ijpd7"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_nkkrl"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_b67lf"]
+
+[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_0bbnh"]
+states/Attack/node = SubResource("AnimationNodeAnimation_nvx8r")
+states/Attack/position = Vector2(652.057, 100.38)
+states/End/position = Vector2(482, 236.5)
+states/Start/position = Vector2(150.5, 98)
+states/Walk/node = SubResource("AnimationNodeAnimation_804j3")
+states/Walk/position = Vector2(346.057, 100.76)
+transitions = ["Start", "Walk", SubResource("AnimationNodeStateMachineTransition_xg2qd"), "Walk", "Attack", SubResource("AnimationNodeStateMachineTransition_ov1h7"), "Attack", "Walk", SubResource("AnimationNodeStateMachineTransition_ijpd7"), "Walk", "End", SubResource("AnimationNodeStateMachineTransition_nkkrl"), "Attack", "End", SubResource("AnimationNodeStateMachineTransition_b67lf")]
+graph_offset = Vector2(41.5575, 31.02)
+
+[node name="cyborg" type="CharacterBody2D" groups=["Enemy"]]
+z_index = 99
+scale = Vector2(1.4, 1.4)
+collision_layer = 8
+floor_stop_on_slope = false
+script = SubResource("GDScript_yd1w5")
+
+[node name="Sprite2D2" type="Sprite2D" parent="."]
+position = Vector2(-0.714285, 0.714286)
+scale = Vector2(1.4, 1.4)
+texture = ExtResource("1_y24x8")
+hframes = 14
+
+[node name="Node2D" type="Node2D" parent="."]
+
+[node name="player_detector" type="Area2D" parent="Node2D"]
+position = Vector2(2.08165e-12, 2.08165e-12)
+collision_layer = 0
+collision_mask = 3
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/player_detector"]
+position = Vector2(-2.04359e-06, 2.05357)
+scale = Vector2(0.999998, 0.999998)
+shape = SubResource("RectangleShape2D_sfjvj")
+debug_color = Color(0.980392, 0, 0.368627, 0.419608)
+
+[node name="punch_area" type="Area2D" parent="Node2D" groups=["Enemy Melee"]]
+collision_layer = 8192
+collision_mask = 3
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/punch_area"]
+position = Vector2(0.357141, 2.14286)
+scale = Vector2(0.999999, 0.999999)
+shape = SubResource("RectangleShape2D_e5fp5")
+disabled = true
+debug_color = Color(0, 0.627451, 0.501961, 0.419608)
+
+[node name="wall_check" type="Node2D" parent="Node2D"]
+
+[node name="wall_check_left" type="RayCast2D" parent="Node2D/wall_check"]
+rotation = 0.014641
+target_position = Vector2(-47.852, 0.700651)
+
+[node name="wall_check_right" type="RayCast2D" parent="Node2D/wall_check"]
+rotation = 0.000170603
+target_position = Vector2(46.4286, -0.00792085)
+
+[node name="floor_check" type="Node2D" parent="Node2D"]
+
+[node name="floor_check_left" type="RayCast2D" parent="Node2D/floor_check"]
+position = Vector2(-22, 0)
+target_position = Vector2(-0.142859, 31.4286)
+
+[node name="floor_check_right" type="RayCast2D" parent="Node2D/floor_check"]
+position = Vector2(22, 0)
+target_position = Vector2(0.142859, 31.4286)
+
+[node name="Area2D" type="Area2D" parent="."]
+collision_layer = 9
+collision_mask = 16
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(0, 2.14286)
+shape = SubResource("CapsuleShape2D_nu6pr")
+debug_color = Color(0.905882, 0, 0.745098, 0.419608)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-1.19209e-07, 2.14286)
+shape = SubResource("CapsuleShape2D_0ca4q")
+
+[node name="player_tracker" type="Node2D" parent="."]
+
+[node name="visibilitiy_range" type="RayCast2D" parent="player_tracker"]
+target_position = Vector2(110, 0)
+collision_mask = 2
+
+[node name="timer" type="Node" parent="."]
+
+[node name="chase_timer" type="Timer" parent="timer"]
+wait_time = 0.933
+
+[node name="shoot_timer" type="Timer" parent="timer"]
+wait_time = 0.4
+
+[node name="healthbar" type="ProgressBar" parent="."]
+modulate = Color(0, 0.701961, 0.333333, 1)
+offset_left = -15.7143
+offset_top = -32.1429
+offset_right = 304.286
+offset_bottom = 27.8571
+scale = Vector2(0.1, 0.1)
+max_value = 10.0
+step = 0.1
+value = 10.0
+show_percentage = false
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_m1qjx")
+}
+
+[node name="AnimationTree" type="AnimationTree" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_m1qjx")
+}
+tree_root = SubResource("AnimationNodeStateMachine_0bbnh")
+anim_player = NodePath("../AnimationPlayer")
+
+[node name="danger_notifier" parent="." instance=ExtResource("2_dp756")]
+visible = false
+position = Vector2(-7.85714, -50.7143)
+
+[connection signal="body_entered" from="Node2D/player_detector" to="." method="_on_player_detector_body_entered"]
+[connection signal="body_exited" from="Node2D/player_detector" to="." method="_on_player_detector_body_exited"]
+[connection signal="body_entered" from="Node2D/punch_area" to="." method="_on_punch_area_body_entered"]
+[connection signal="area_entered" from="Area2D" to="." method="_on_area_2d_area_entered"]
+[connection signal="timeout" from="timer/shoot_timer" to="." method="_on_shoot_timer_timeout"]

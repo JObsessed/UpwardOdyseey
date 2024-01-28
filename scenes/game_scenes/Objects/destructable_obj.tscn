@@ -1,0 +1,83 @@
+[gd_scene load_steps=10 format=3 uid="uid://bcgh6ef2f7av1"]
+
+[ext_resource type="Texture2D" uid="uid://bquubbbfw6qoj" path="res://icon.svg" id="1_oy7ha"]
+[ext_resource type="Script" path="res://scenes/game_scenes/Objects/destructable_obj.gd" id="1_qgiy3"]
+[ext_resource type="Shader" uid="uid://cgan8rv068l1v" path="res://scenes/game_scenes/Effects/object_hit_effect.tres" id="2_q8xgm"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_atj5u"]
+shader = ExtResource("2_q8xgm")
+shader_parameter/enabled = false
+shader_parameter/ColorParameter = Color(0.999999, 0.997097, 0.996594, 1)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_deut8"]
+size = Vector2(91.7501, 76)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_qav3n"]
+size = Vector2(76, 93)
+
+[sub_resource type="Animation" id="Animation_1iv8w"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:material:shader_parameter/enabled")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
+[sub_resource type="Animation" id="Animation_q3qoy"]
+resource_name = "hit"
+length = 0.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:material:shader_parameter/enabled")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_wb0yo"]
+_data = {
+"RESET": SubResource("Animation_1iv8w"),
+"hit": SubResource("Animation_q3qoy")
+}
+
+[node name="destructable_obj" type="CharacterBody2D"]
+collision_layer = 1024
+collision_mask = 17
+script = ExtResource("1_qgiy3")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+material = SubResource("ShaderMaterial_atj5u")
+texture = ExtResource("1_oy7ha")
+
+[node name="Area2D" type="Area2D" parent="."]
+collision_layer = 1024
+collision_mask = 16
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+rotation = -1.5708
+shape = SubResource("RectangleShape2D_deut8")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-1.90735e-06, -1.90735e-06)
+rotation = 3.14159
+shape = SubResource("RectangleShape2D_qav3n")
+debug_color = Color(0.662745, 0.513726, 0, 0.419608)
+
+[node name="HitAnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_wb0yo")
+}
+
+[connection signal="area_entered" from="Area2D" to="." method="_on_area_2d_area_entered"]

@@ -1,0 +1,98 @@
+[gd_scene load_steps=14 format=3 uid="uid://ce5n4arvu6yjy"]
+
+[ext_resource type="Script" path="res://scripts/mainmenu.gd" id="1_3pbbq"]
+[ext_resource type="Texture2D" uid="uid://c28pm1lnwddcy" path="res://assets/Menu_assets/pictures/Menu_bg.jpg" id="2_54dno"]
+[ext_resource type="Texture2D" uid="uid://cff0v0umm8ol2" path="res://assets/Menu_assets/Buttons/normal/settings_button_1.png" id="3_0y2bw"]
+[ext_resource type="Texture2D" uid="uid://bdpulxuaafcip" path="res://assets/Menu_assets/Buttons/normal/newgame_button.png" id="4_cdvlx"]
+[ext_resource type="Texture2D" uid="uid://bnm2v6gn0pxb7" path="res://assets/Menu_assets/Buttons/normal/levelSelect_button.png" id="5_iflav"]
+[ext_resource type="Texture2D" uid="uid://6ruj8iq0ce0l" path="res://assets/Menu_assets/Buttons/hover/levelSelect_button_hover.png" id="6_buw6v"]
+[ext_resource type="Texture2D" uid="uid://cy6bpfikdudma" path="res://assets/Menu_assets/Buttons/hover/newgame_button_hover.png" id="6_g0woi"]
+[ext_resource type="AudioStream" uid="uid://ynqooi3tgevo" path="res://assets/Music & Sounds/music/Track08.ogg" id="7_6oeyi"]
+[ext_resource type="Texture2D" uid="uid://swjmoyycvddd" path="res://assets/Menu_assets/Buttons/normal/exit_button.png" id="7_oo5ro"]
+[ext_resource type="PackedScene" uid="uid://dl4houhovkqae" path="res://scenes/menu_scenes/settings_menu.tscn" id="8_bixbs"]
+[ext_resource type="Script" path="res://scripts/button_scripts/selectLevel_button.gd" id="9_dlmtp"]
+[ext_resource type="AudioStream" uid="uid://cdnd0u3cfljyj" path="res://assets/Music & Sounds/sfx/mouse_click.mp3" id="9_poyo6"]
+[ext_resource type="Texture2D" uid="uid://6avvn0oyfyhi" path="res://assets/Menu_assets/Buttons/hover/exit_button_hover.png" id="10_fkf4w"]
+
+[node name="main_menu" type="Control"]
+process_mode = 3
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_3pbbq")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_54dno")
+
+[node name="settings_button" type="TextureButton" parent="."]
+layout_mode = 2
+offset_left = 928.0
+offset_top = 64.0
+offset_right = 1870.0
+offset_bottom = 926.0
+scale = Vector2(0.21, 0.21)
+action_mode = 0
+texture_normal = ExtResource("3_0y2bw")
+
+[node name="newGame_button" type="TextureButton" parent="."]
+light_mask = 0
+visibility_layer = 512
+layout_mode = 2
+offset_left = 80.0
+offset_top = 312.0
+offset_right = 302.0
+offset_bottom = 375.0
+scale = Vector2(1.5, 1.5)
+action_mode = 0
+texture_normal = ExtResource("4_cdvlx")
+texture_hover = ExtResource("6_g0woi")
+
+[node name="selectLevel_button" type="TextureButton" parent="."]
+layout_mode = 0
+offset_left = 88.0
+offset_top = 408.0
+offset_right = 310.0
+offset_bottom = 471.0
+scale = Vector2(1.5, 1.5)
+texture_normal = ExtResource("5_iflav")
+texture_hover = ExtResource("6_buw6v")
+script = ExtResource("9_dlmtp")
+
+[node name="exit_button" type="TextureButton" parent="."]
+layout_mode = 0
+offset_left = 96.0
+offset_top = 504.0
+offset_right = 318.0
+offset_bottom = 567.0
+scale = Vector2(1.5, 1.5)
+texture_normal = ExtResource("7_oo5ro")
+texture_hover = ExtResource("10_fkf4w")
+
+[node name="settings_menu" parent="." instance=ExtResource("8_bixbs")]
+visible = false
+layout_mode = 1
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("7_6oeyi")
+volume_db = -20.0
+autoplay = true
+bus = &"Music"
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+visible = false
+stream = ExtResource("9_poyo6")
+volume_db = -20.0
+
+[connection signal="mouse_entered" from="settings_button" to="." method="_on_settings_button_mouse_entered"]
+[connection signal="mouse_entered" from="newGame_button" to="." method="_on_new_game_button_mouse_entered"]
+[connection signal="mouse_entered" from="selectLevel_button" to="." method="_on_select_level_button_mouse_entered"]
+[connection signal="mouse_entered" from="exit_button" to="." method="_on_exit_button_mouse_entered"]

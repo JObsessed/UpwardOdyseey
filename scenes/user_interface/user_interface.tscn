@@ -1,0 +1,51 @@
+[gd_scene load_steps=6 format=3 uid="uid://syowjbv6caqj"]
+
+[ext_resource type="PackedScene" uid="uid://mj8kcovlpbc1" path="res://scenes/user_interface/collectable_counter.tscn" id="1_7dm6l"]
+[ext_resource type="Script" path="res://scenes/user_interface/user_interface.gd" id="1_q3lqm"]
+[ext_resource type="PackedScene" uid="uid://c41smqs5dtjl2" path="res://scenes/user_interface/healthbar.tscn" id="3_c01g4"]
+[ext_resource type="Texture2D" uid="uid://ytmx8ycpjhbd" path="res://assets/Menu_assets/Buttons/pause_button.png" id="4_0qoqa"]
+
+[sub_resource type="SystemFont" id="SystemFont_ictxd"]
+font_names = PackedStringArray("Krungthep")
+
+[node name="User_Interface" type="CanvasLayer" node_paths=PackedStringArray("collectable_counter")]
+script = ExtResource("1_q3lqm")
+collectable_counter = NodePath("MarginContainer/VBoxContainer/Collectable_Counter/Label")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 36
+theme_override_constants/margin_right = 26
+theme_override_constants/margin_bottom = 12
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = -30
+
+[node name="healthbar" parent="MarginContainer/VBoxContainer" instance=ExtResource("3_c01g4")]
+position = Vector2(5, -26)
+
+[node name="Collectable_Counter" parent="MarginContainer/VBoxContainer" instance=ExtResource("1_7dm6l")]
+layout_mode = 2
+theme_override_constants/separation = 24
+
+[node name="Label" parent="MarginContainer/VBoxContainer/Collectable_Counter" index="1"]
+theme_override_fonts/font = SubResource("SystemFont_ictxd")
+text = "Placeholder"
+
+[node name="TextureButton" type="TextureButton" parent="MarginContainer"]
+custom_minimum_size = Vector2(24, 24)
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 0
+texture_normal = ExtResource("4_0qoqa")
+stretch_mode = 0
+
+[connection signal="pressed" from="MarginContainer/TextureButton" to="." method="_on_texture_button_pressed"]
+
+[editable path="MarginContainer/VBoxContainer/Collectable_Counter"]
