@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://cfpf78pjg4tvf"
+path="res://.godot/imported/glitchbass.ogg-6dde8b27a3e002be395b5721af2f3ac4.oggvorbisstr"
+
+[deps]
+
+source_file="res://assets/Music & Sounds/music/glitchbass.ogg"
+dest_files=["res://.godot/imported/glitchbass.ogg-6dde8b27a3e002be395b5721af2f3ac4.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

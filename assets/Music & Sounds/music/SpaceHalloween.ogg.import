@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://jmoblxgnlsuk"
+path="res://.godot/imported/SpaceHalloween.ogg-470b8512fbd7564d9ea7c662bcfc6254.oggvorbisstr"
+
+[deps]
+
+source_file="res://assets/Music & Sounds/music/SpaceHalloween.ogg"
+dest_files=["res://.godot/imported/SpaceHalloween.ogg-470b8512fbd7564d9ea7c662bcfc6254.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4
