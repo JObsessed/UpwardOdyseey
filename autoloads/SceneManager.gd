@@ -19,6 +19,7 @@ func level_transition(level : String):
 		get_tree().get_root().add_child(loading_screen_instance)
 		await get_tree().create_timer(3.0).timeout
 		get_tree().change_scene_to_file(level_path)
+		HealthManager.reset_health()
 		loading_screen_instance.queue_free()
 
 func menu_transition(menu : String):

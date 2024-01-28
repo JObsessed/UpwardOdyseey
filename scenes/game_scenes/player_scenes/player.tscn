@@ -730,12 +730,12 @@ bus = &"SFX"
 
 [node name="dmg_sfx" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("12_awur0")
-volume_db = -6.0
+volume_db = -12.0
 bus = &"SFX"
 
 [node name="jump_sfx" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("12_ameqi")
-volume_db = -6.0
+volume_db = -12.0
 bus = &"SFX"
 
 [node name="low_health_sfx" type="AudioStreamPlayer2D" parent="."]

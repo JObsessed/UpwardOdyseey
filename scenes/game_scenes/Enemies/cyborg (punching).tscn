@@ -150,7 +150,7 @@ func take_damage() -> void:
 
 func _on_area_2d_area_entered(area):
 	print(\"Projectile has hit enemy\")
-	damage = 3 
+	damage = 2
 	take_damage()
 
 func attack() -> void:
@@ -163,8 +163,10 @@ func _on_player_detector_body_entered(body):
 	if body.is_in_group(\"player\"):
 		state_machine.travel(\"Attack\")
 		velocity = Vector2.ZERO
+		
 func _on_player_detector_body_exited(body):
-	state_machine.travel(\"Walk\")
+	if body.is_in_group(\"player\"):
+		state_machine.travel(\"Walk\")
 
 func _on_punch_area_body_entered(body):
 	if body.is_in_group(\"player\"):

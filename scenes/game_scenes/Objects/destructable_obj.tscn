@@ -1,6 +1,6 @@
 [gd_scene load_steps=10 format=3 uid="uid://bcgh6ef2f7av1"]
 
-[ext_resource type="Texture2D" uid="uid://bquubbbfw6qoj" path="res://icon.svg" id="1_oy7ha"]
+[ext_resource type="Texture2D" uid="uid://bquubbbfw6qoj" path="res://assets/icon.svg" id="1_oy7ha"]
 [ext_resource type="Script" path="res://scenes/game_scenes/Objects/destructable_obj.gd" id="1_qgiy3"]
 [ext_resource type="Shader" uid="uid://cgan8rv068l1v" path="res://scenes/game_scenes/Effects/object_hit_effect.tres" id="2_q8xgm"]
 

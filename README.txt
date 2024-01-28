@@ -2,9 +2,17 @@ Lizenzen & Quellen
 
 SFX:
 	"Collecting Sound": "Game treasure coin" unter https://mixkit.co/free-sound-effects/coin/
+	"jump_sound":
+	"low_health_sound":
 	"Mouse Click": "Button" von Unversfield unter https://pixabay.com/sound-effects/search/mouse%20click/
-	"Shooting Sound": "Sci fi plasma gun power up" unter https://mixkit.co/free-sound-effects/gun/
+	"npc_voice":
 	"Rope": "Swishes" unter https://pixabay.com/de/sound-effects/search/rope/?pagi=2
+	"Shooting Sound": "Sci fi plasma gun power up" unter https://mixkit.co/free-sound-effects/gun/
+	"take_damage_sound":
+		
+Music:
+	
+	
 	
 Visuals:
 	
