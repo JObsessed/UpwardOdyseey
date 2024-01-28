@@ -1,8 +1,9 @@
-[gd_scene load_steps=20 format=3 uid="uid://cked1053jieve"]
+[gd_scene load_steps=21 format=3 uid="uid://cked1053jieve"]
 
 [ext_resource type="PackedScene" uid="uid://cafllu53eb60b" path="res://scenes/game_scenes/Enemies/enemy_projectile.tscn" id="1_5s3rd"]
 [ext_resource type="Texture2D" uid="uid://pl7s6ig6xcol" path="res://assets/NPC Modells/Punk/Punk_Walk.png" id="1_xeftq"]
 [ext_resource type="PackedScene" uid="uid://br4asclxmeb6e" path="res://scenes/user_interface/danger_notifier.tscn" id="3_yxk2i"]
+[ext_resource type="AudioStream" uid="uid://bcujt80wb6p0e" path="res://assets/Music & Sounds/sfx/shooting_sound.mp3" id="4_m8uqx"]
 
 [sub_resource type="GDScript" id="GDScript_yd1w5"]
 script/source = "class_name EnemyTemplate
@@ -97,6 +98,7 @@ func _check_aim():
 		shoot_timer.stop()
 
 func _shoot():
+	$AudioStreamPlayer2D.play()
 	var enemy_projectile = projectile.instantiate()
 	get_tree().current_scene.add_child(enemy_projectile)
 	enemy_projectile.global_position = global_position
@@ -369,6 +371,10 @@ show_percentage = false
 [node name="danger_notifier" parent="." instance=ExtResource("3_yxk2i")]
 visible = false
 position = Vector2(-7.85714, -50.7143)
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("4_m8uqx")
+volume_db = -12.0
 
 [connection signal="area_entered" from="Area2D" to="." method="_on_area_2d_area_entered"]
 [connection signal="timeout" from="timer/shoot_timer" to="." method="_on_shoot_timer_timeout"]
