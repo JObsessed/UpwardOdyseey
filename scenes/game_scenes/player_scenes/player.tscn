@@ -1,4 +1,4 @@
-[gd_scene load_steps=64 format=3 uid="uid://b1wakm21xgkoy"]
+[gd_scene load_steps=67 format=3 uid="uid://b1wakm21xgkoy"]
 
 [ext_resource type="Shader" uid="uid://djehx483lvld" path="res://scenes/game_scenes/Effects/player_hit_effect.tres" id="1_snal7"]
 [ext_resource type="Texture2D" uid="uid://1nl7cvmnf4vf" path="res://assets/Character/Sprites/Armless_Jump_Off.png" id="2_th0y3"]
@@ -11,8 +11,11 @@
 [ext_resource type="PackedScene" uid="uid://biwk5lspsdwuk" path="res://scenes/game_scenes/player_scenes/rope.tscn" id="9_cvjwa"]
 [ext_resource type="PackedScene" uid="uid://d20sojylpw3lg" path="res://scenes/hitbox/hitbox.tscn" id="10_8yovw"]
 [ext_resource type="AudioStream" uid="uid://bcujt80wb6p0e" path="res://assets/Music & Sounds/sfx/shooting_sound.mp3" id="11_es4vs"]
+[ext_resource type="AudioStream" uid="uid://u45818iuxena" path="res://assets/Music & Sounds/sfx/jump_sound.wav" id="12_ameqi"]
+[ext_resource type="AudioStream" uid="uid://drc7pagd3mx7l" path="res://assets/Music & Sounds/sfx/take_damage_sound.wav" id="12_awur0"]
 [ext_resource type="AudioStream" uid="uid://crkpbsfxc7etc" path="res://assets/Music & Sounds/sfx/rope.mp3" id="12_if1hd"]
 [ext_resource type="AudioStream" uid="uid://dnb0l1hd1jnpt" path="res://assets/Music & Sounds/sfx/running_sound_1.mp3" id="12_nn82v"]
+[ext_resource type="AudioStream" uid="uid://cbb28obiivdpu" path="res://assets/Music & Sounds/sfx/low_health_sound.wav" id="14_2fgvs"]
 
 [sub_resource type="GDScript" id="GDScript_huxeg"]
 script/source = "class_name PlayerEntity
@@ -54,6 +57,7 @@ func _physics_process(delta):
 	# Handle Jump.
 	if Input.is_action_just_pressed(\"jump\"):
 		if is_on_floor():
+			$jump_sfx.play()
 			jump()
 		elif not has_double_jumped:
 			double_jump()
@@ -161,6 +165,7 @@ func _on_hitbox_body_entered(body : Node2D):
 		print(\"Enemy detected \", body.base_damage)
 		hit_animation_player.play(\"hit\")
 		hit_animation_gunarm.play(\"hit\")
+		$dmg_sfx.play()
 		HealthManager.decrease_health(body.base_damage)
 	
 func _on_hitbox_area_entered(area : Node2D):
@@ -168,13 +173,17 @@ func _on_hitbox_area_entered(area : Node2D):
 		print(\"Hazard detected\", area.base_damage)
 		hit_animation_player.play(\"hit\")
 		hit_animation_gunarm.play(\"hit\")
+		$dmg_sfx.play()
 		HealthManager.decrease_health(area.base_damage)	
 	elif area.is_in_group(\"Enemy Projectile\"):
 		print(\"Enemy Projectile detected\", area.base_damage)
 		hit_animation_player.play(\"hit\")
 		hit_animation_gunarm.play(\"hit\")
+		$dmg_sfx.play()
 		HealthManager.decrease_health(area.base_damage)
 
+	if HealthManager.curr_health == 1:
+		$low_health_sfx.play()
 	if HealthManager.curr_health == 0:
 		player_death()
 
@@ -717,13 +726,29 @@ debug_color = Color(0.901961, 0, 0.752941, 0.419608)
 [node name="shoot_sfx" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("11_es4vs")
 volume_db = -6.0
+bus = &"SFX"
+
+[node name="dmg_sfx" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("12_awur0")
+volume_db = -6.0
+bus = &"SFX"
+
+[node name="jump_sfx" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("12_ameqi")
+volume_db = -6.0
+bus = &"SFX"
+
+[node name="low_health_sfx" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("14_2fgvs")
 
 [node name="running_sfx" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("12_nn82v")
 volume_db = 10.0
+bus = &"SFX"
 
 [node name="rope_sfx" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("12_if1hd")
+bus = &"SFX"
 
 [node name="HitAnimationGunarm" type="AnimationPlayer" parent="."]
 libraries = {
