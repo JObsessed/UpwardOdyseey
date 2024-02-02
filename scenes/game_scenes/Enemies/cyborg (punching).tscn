@@ -1,6 +1,6 @@
-[gd_scene load_steps=20 format=3 uid="uid://ca6md28pwcqq7"]
+[gd_scene load_steps=21 format=3 uid="uid://ca6md28pwcqq7"]
 
-[ext_resource type="Texture2D" uid="uid://cbba4tepke32w" path="res://assets/NPC Modells/Cyborg/cyborg_spritesheet-export-finalt.png" id="1_y24x8"]
+[ext_resource type="Texture2D" uid="uid://uey1p3a3o456" path="res://assets/NPC Modells/Cyborg/cyborg_spritesheet_export_finalt.png" id="1_1l8ut"]
 [ext_resource type="PackedScene" uid="uid://br4asclxmeb6e" path="res://scenes/user_interface/danger_notifier.tscn" id="2_dp756"]
 
 [sub_resource type="GDScript" id="GDScript_yd1w5"]
@@ -106,7 +106,6 @@ func movement() -> void:
 			current_speed = SPEED
 	if state == States.Chase:
 		if player_in_sight == true:
-			
 			if direction.x < 0:
 				current_speed = CHASE_SPEED
 			else:
@@ -259,9 +258,27 @@ tracks/0/keys = {
 "values": [0, 1, 2, 3, 4, 5]
 }
 
+[sub_resource type="Animation" id="Animation_c8645"]
+resource_name = "Idle"
+length = 0.35
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D2:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [14, 15, 16, 17]
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_m1qjx"]
 _data = {
 "Attack": SubResource("Animation_xycal"),
+"Idle": SubResource("Animation_c8645"),
 "RESET": SubResource("Animation_hgwco"),
 "Walk": SubResource("Animation_2m3dk")
 }
@@ -288,9 +305,9 @@ states/Attack/position = Vector2(652.057, 100.38)
 states/End/position = Vector2(482, 236.5)
 states/Start/position = Vector2(150.5, 98)
 states/Walk/node = SubResource("AnimationNodeAnimation_804j3")
-states/Walk/position = Vector2(346.057, 100.76)
+states/Walk/position = Vector2(346.057, 100.57)
 transitions = ["Start", "Walk", SubResource("AnimationNodeStateMachineTransition_xg2qd"), "Walk", "Attack", SubResource("AnimationNodeStateMachineTransition_ov1h7"), "Attack", "Walk", SubResource("AnimationNodeStateMachineTransition_ijpd7"), "Walk", "End", SubResource("AnimationNodeStateMachineTransition_nkkrl"), "Attack", "End", SubResource("AnimationNodeStateMachineTransition_b67lf")]
-graph_offset = Vector2(41.5575, 31.02)
+graph_offset = Vector2(-106.943, -135.713)
 
 [node name="cyborg" type="CharacterBody2D" groups=["Enemy"]]
 z_index = 99
@@ -302,8 +319,8 @@ script = SubResource("GDScript_yd1w5")
 [node name="Sprite2D2" type="Sprite2D" parent="."]
 position = Vector2(-0.714285, 0.714286)
 scale = Vector2(1.4, 1.4)
-texture = ExtResource("1_y24x8")
-hframes = 14
+texture = ExtResource("1_1l8ut")
+hframes = 18
 
 [node name="Node2D" type="Node2D" parent="."]
 

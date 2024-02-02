@@ -23,7 +23,6 @@ func increase_health(value : int) -> void:
 	on_health_change.emit(curr_health)
 
 func reset_health() -> void:
-	for i in 5:
-		curr_health += 1
+		curr_health = 5
 		on_health_change.emit(curr_health)
 	

@@ -1,7 +1,8 @@
-[gd_scene load_steps=21 format=3 uid="uid://cked1053jieve"]
+[gd_scene load_steps=26 format=3 uid="uid://cked1053jieve"]
 
 [ext_resource type="PackedScene" uid="uid://cafllu53eb60b" path="res://scenes/game_scenes/Enemies/enemy_projectile.tscn" id="1_5s3rd"]
 [ext_resource type="Texture2D" uid="uid://pl7s6ig6xcol" path="res://assets/NPC Modells/Punk/Punk_Walk.png" id="1_xeftq"]
+[ext_resource type="Texture2D" uid="uid://csnlwjeq4lp0t" path="res://assets/NPC Modells/Punk/Punk_idle-export.png" id="3_3ildo"]
 [ext_resource type="PackedScene" uid="uid://br4asclxmeb6e" path="res://scenes/user_interface/danger_notifier.tscn" id="3_yxk2i"]
 [ext_resource type="AudioStream" uid="uid://bcujt80wb6p0e" path="res://assets/Music & Sounds/sfx/shooting_sound.mp3" id="4_m8uqx"]
 
@@ -46,7 +47,7 @@ var can_take_dmg = true
 var base_damage = 1.0
 
 enum States {
-	#Idle,
+	Idle,
 	Walk,
 	Chase,
 }
@@ -130,6 +131,24 @@ func movement() -> void:
 				current_speed = CHASE_SPEED
 			else:
 				current_speed = -CHASE_SPEED
+				
+		
+			if not floor_check_right.is_colliding():
+				state = States.Idle
+				animated_sprite_2d.flip_h
+				current_speed = 0
+			if not floor_check_left.is_colliding():
+				state = States.Idle
+				animated_sprite_2d.flip_h
+				current_speed = 0
+			if wall_check_right.is_colliding():
+				state = States.Idle
+				animated_sprite_2d.flip_h
+				current_speed = 0
+			if wall_check_left.is_colliding():
+				state = States.Idle
+				animated_sprite_2d.flip_h
+				current_speed = 0
 	
 	velocity.x = current_speed
 	animated_sprite_2d.flip_h = velocity.x < 0
@@ -142,8 +161,10 @@ func _physics_process(delta):
 	aim_at_player()
 	_check_aim()
 	movement()
+	animation()
 	update_healthbar()
 	move_and_slide()
+	
 	
 	if not is_on_floor():
 		velocity.y += gravity * delta
@@ -153,7 +174,10 @@ func animation() -> void:
 		animated_sprite_2d.play(\"walk\")
 	elif state == States.Chase:
 		animated_sprite_2d.play(\"chase\")
-	
+	elif state == States.Idle:
+		animated_sprite_2d.play(\"idle\")
+		
+
 func update_healthbar() -> void:
 	var healthbar = $healthbar
 	healthbar.value = enemyhealthPoints
@@ -214,6 +238,22 @@ region = Rect2(128, 0, 32, 36)
 atlas = ExtResource("1_xeftq")
 region = Rect2(160, 0, 32, 36)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_auckv"]
+atlas = ExtResource("3_3ildo")
+region = Rect2(0, 12, 32, 36)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2lsp4"]
+atlas = ExtResource("3_3ildo")
+region = Rect2(32, 12, 32, 36)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gtd1q"]
+atlas = ExtResource("3_3ildo")
+region = Rect2(64, 12, 32, 36)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bw5mx"]
+atlas = ExtResource("3_3ildo")
+region = Rect2(96, 12, 32, 36)
+
 [sub_resource type="AtlasTexture" id="AtlasTexture_08aw3"]
 atlas = ExtResource("1_xeftq")
 region = Rect2(0, 0, 32, 36)
@@ -265,6 +305,23 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
+"texture": SubResource("AtlasTexture_auckv")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2lsp4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gtd1q")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_bw5mx")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": SubResource("AtlasTexture_08aw3")
 }, {
 "duration": 1.0,
@@ -294,6 +351,7 @@ height = 32.0
 z_index = 99
 scale = Vector2(1.4, 1.4)
 collision_layer = 8
+collision_mask = 9
 script = SubResource("GDScript_yd1w5")
 projectile = ExtResource("1_5s3rd")
 
@@ -309,10 +367,8 @@ debug_color = Color(0.905882, 0, 0.745098, 0.419608)
 [node name="Sprite2D" type="AnimatedSprite2D" parent="."]
 position = Vector2(-2.86986e-42, -6.77626e-21)
 sprite_frames = SubResource("SpriteFrames_mdf2p")
-animation = &"walk"
-frame_progress = 0.99182
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+animation = &"idle"
+frame_progress = 0.402587
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(-1.19209e-07, 2.14286)
@@ -322,20 +378,22 @@ shape = SubResource("CapsuleShape2D_0ca4q")
 
 [node name="wall_check_left" type="RayCast2D" parent="wall_check"]
 rotation = 0.014641
-target_position = Vector2(-30, 2.08165e-12)
+target_position = Vector2(-19.9979, 0.29281)
+collision_mask = 9
 
 [node name="wall_check_right" type="RayCast2D" parent="wall_check"]
 rotation = 0.000170603
-target_position = Vector2(30, 2.08165e-12)
+target_position = Vector2(15.7143, -0.0026809)
+collision_mask = 9
 
 [node name="floor_check" type="Node2D" parent="."]
 
 [node name="floor_check_left" type="RayCast2D" parent="floor_check"]
-position = Vector2(-22, 0)
+position = Vector2(-17.8571, 0)
 target_position = Vector2(2.08165e-12, 30)
 
 [node name="floor_check_right" type="RayCast2D" parent="floor_check"]
-position = Vector2(22, 0)
+position = Vector2(15, 0)
 target_position = Vector2(2.08165e-12, 30)
 
 [node name="player_tracker" type="Node2D" parent="."]
