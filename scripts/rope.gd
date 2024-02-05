@@ -22,7 +22,7 @@ func release_grappling_hook() -> void:
 	is_flying = false
 	is_hooked = false
 	
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	self.visible = is_flying or is_hooked
 	if not self.visible:
 		return
@@ -32,7 +32,7 @@ func _process(delta: float) -> void:
 	rope_elements.position = bolt_loc
 	rope_elements.region_rect.size.y = bolt_loc.length()
 	
-func _physics_process(delta: float) -> void:
+func _physics_process(_delta: float) -> void:
 	$bolt.global_position = bolt_pos
 	if is_flying:
 		if $bolt.move_and_collide(hook_dir * bolt_speed):

@@ -520,7 +520,7 @@ func _ready():
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
+func _process(_delta):
 	if state != -1:
 		$Gunarm.position = positions[state]
 	
@@ -572,7 +572,7 @@ var projectile = preload(\"res://scenes/game_scenes/player_scenes/projectile.tsc
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
+func _process(_delta):
 #	self.rotation = get_angle_to(get_global_mouse_position())
 #	self.rotation_degrees = abs(get_angle_to(get_global_mouse_position()) * 180 / PI)
 	var delta_x = (self.get_global_position().x - get_global_mouse_position().x)
@@ -583,15 +583,6 @@ func _process(delta):
 			self.rotation_degrees = atan(delty_y/delta_x) * 180 / PI * -1
 		else:
 			self.rotation_degrees = atan(delty_y/delta_x) * 180 / PI 
-
-	var mouse_position = get_global_mouse_position()
-	
-#	if Input.is_action_pressed(\"shoot\"):
-#		var projectile_instance = projectile.instantiate()
-#		#projectile_instance.roation = rotation
-#		projectile_instance.global_position = $Marker2D.global_position
-#		get_parent().add_child(projectile_instance) #mehrere Kugeln
-
 "
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_cmpnk"]

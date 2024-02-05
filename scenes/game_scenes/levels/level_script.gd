@@ -5,7 +5,7 @@ var player
 func _ready():
 	player = get_tree().get_first_node_in_group("player")
 	
-func _process(delta):
+func _process(_delta):
 	check_player_death()
 #
 func check_player_death():
