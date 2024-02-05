@@ -109,5 +109,5 @@ chat={
 
 textures/canvas_textures/default_texture_filter=0
 renderer/rendering_method="mobile"
-environment/defaults/default_clear_color=Color(0.278431, 0.317647, 0.458824, 1)
+environment/defaults/default_clear_color=Color(0.278431, 0.317647, 0.458824, 0)
 environment/layer_9=""

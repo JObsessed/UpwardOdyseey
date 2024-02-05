@@ -16,6 +16,7 @@ func shoot_grappling_hook(direction):
 	hook_dir = direction.normalized()
 	is_flying = true
 	bolt_pos = self.global_position
+
 	
 func release_grappling_hook() -> void:
 	is_flying = false
@@ -38,4 +39,3 @@ func _physics_process(delta: float) -> void:
 			is_hooked = true
 			is_flying = false
 	bolt_pos = $bolt.global_position
-	

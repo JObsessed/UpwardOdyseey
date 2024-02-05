@@ -1,8 +1,8 @@
 [gd_scene load_steps=10 format=3 uid="uid://bcgh6ef2f7av1"]
 
-[ext_resource type="Texture2D" uid="uid://bquubbbfw6qoj" path="res://assets/icon.svg" id="1_oy7ha"]
 [ext_resource type="Script" path="res://scenes/game_scenes/Objects/destructable_obj.gd" id="1_qgiy3"]
 [ext_resource type="Shader" uid="uid://cgan8rv068l1v" path="res://scenes/game_scenes/Effects/object_hit_effect.tres" id="2_q8xgm"]
+[ext_resource type="Texture2D" uid="uid://dvvqltyhi4gms" path="res://assets/Environment/Tilemaps/garbage.png" id="3_i5vp0"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_atj5u"]
 shader = ExtResource("2_q8xgm")
@@ -59,7 +59,7 @@ script = ExtResource("1_qgiy3")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 material = SubResource("ShaderMaterial_atj5u")
-texture = ExtResource("1_oy7ha")
+texture = ExtResource("3_i5vp0")
 
 [node name="Area2D" type="Area2D" parent="."]
 collision_layer = 1024
