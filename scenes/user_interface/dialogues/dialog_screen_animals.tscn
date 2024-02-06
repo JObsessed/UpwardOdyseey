@@ -4,7 +4,10 @@
 [ext_resource type="AudioStream" uid="uid://cdnd0u3cfljyj" path="res://assets/Music & Sounds/sfx/mouse_click.mp3" id="2_gpy7s"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ea8oa"]
-bg_color = Color(1, 1, 1, 0.145098)
+bg_color = Color(1, 1, 1, 0.305882)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
 
 [sub_resource type="SystemFont" id="SystemFont_pvd6j"]
 font_names = PackedStringArray("Krungthep")
@@ -15,28 +18,27 @@ script = ExtResource("1_270oi")
 [node name="Panel" type="Panel" parent="."]
 offset_left = -46.0
 offset_top = -87.0
-offset_right = 46.0
-offset_bottom = -34.0
+offset_right = 45.0
+offset_bottom = -56.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_ea8oa")
 
 [node name="Name" type="RichTextLabel" parent="Panel"]
 layout_mode = 0
-offset_left = 7.0
-offset_top = 11.0
-offset_right = 71.0
-offset_bottom = 35.0
+offset_left = 5.0
+offset_top = 3.0
+offset_right = 86.0
+offset_bottom = 27.0
 theme_override_fonts/normal_font = SubResource("SystemFont_pvd6j")
 theme_override_font_sizes/normal_font_size = 8
-text = "Name"
 
 [node name="Text" type="RichTextLabel" parent="Panel"]
 layout_mode = 0
 offset_left = 6.0
-offset_top = 25.0
-offset_right = 84.0
-offset_bottom = 51.0
+offset_top = 3.0
+offset_right = 86.0
+offset_bottom = 27.0
 theme_override_fonts/normal_font = SubResource("SystemFont_pvd6j")
-theme_override_font_sizes/normal_font_size = 7
+theme_override_font_sizes/normal_font_size = 10
 text = "Text"
 
 [node name="chat_sound" type="AudioStreamPlayer2D" parent="."]

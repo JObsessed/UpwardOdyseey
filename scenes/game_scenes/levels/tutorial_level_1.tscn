@@ -36,7 +36,7 @@
 [ext_resource type="PackedScene" uid="uid://gf2a5l2ihkx2" path="res://scenes/game_scenes/Enemies & NPC/Greg (npc).tscn" id="19_lkqdd"]
 [ext_resource type="AudioStream" uid="uid://cqoscolo3acik" path="res://assets/Music & Sounds/music/InterRegret.ogg" id="20_iaqjs"]
 [ext_resource type="PackedScene" uid="uid://biucawdti4lif" path="res://scenes/game_scenes/Hazards/acid_pool.tscn" id="36_7dwuh"]
-[ext_resource type="PackedScene" uid="uid://cqi0y3wei7uc5" path="res://scenes/game_scenes/Enemies & NPC/base_animal (npc).tscn" id="37_5412m"]
+[ext_resource type="PackedScene" uid="uid://cqi0y3wei7uc5" path="res://scenes/game_scenes/Enemies & NPC/dog_1 (npc).tscn" id="37_5412m"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_yigai"]
 texture = ExtResource("2_qh620")

@@ -1,0 +1,192 @@
+[gd_scene load_steps=20 format=3 uid="uid://cqi0y3wei7uc5"]
+
+[ext_resource type="PackedScene" uid="uid://lgn2is5rxyu1" path="res://scenes/user_interface/dialogues/interaction_notifier.tscn" id="2_igwup"]
+[ext_resource type="Texture2D" uid="uid://cj1vbai3gdtyc" path="res://assets/Environment/Animals/1 Dog/Idle.png" id="3_slyhv"]
+[ext_resource type="PackedScene" uid="uid://cxxs30dek5cdi" path="res://scenes/user_interface/dialogues/dialog_screen_animals.tscn" id="4_a4hur"]
+[ext_resource type="Texture2D" uid="uid://chmhwnxfxtncm" path="res://assets/Environment/Animals/1 Dog/Walk.png" id="4_fby7u"]
+[ext_resource type="AudioStream" uid="uid://cdnd0u3cfljyj" path="res://assets/Music & Sounds/sfx/mouse_click.mp3" id="4_qup3u"]
+
+[sub_resource type="GDScript" id="GDScript_yd1w5"]
+script/source = "extends CharacterBody2D
+
+@onready var animated_sprite_2d = $Sprite2D as AnimatedSprite2D
+#@onready var interaction_notifier = $interaction_notifier as Node2D
+@onready var dialogue_screen = $DialogScreen as Node2D
+@onready var chat_sound = $chat_sound as AudioStreamPlayer2D
+#@onready var npc_gibberish = $npc_gibberish as AudioStreamPlayer2D
+
+@export var dialog_name : String
+
+# Get the gravity from the project settings to be synced with RigidBody nodes.
+var gravity = ProjectSettings.get_setting(\"physics/2d/default_gravity\")
+
+var player
+
+var is_in_dialogue = false
+var player_is_in_dialogue_area = false
+
+func _ready():
+	player = get_tree().get_first_node_in_group(\"player\")
+	
+func _physics_process(delta):
+	if not is_on_floor():
+		velocity.y += gravity * delta
+		
+	start_conversation()
+	move_and_slide()
+
+func _on_dialog_area_body_entered(body):
+	if body.is_in_group(\"player\"):
+		player = body
+		player_is_in_dialogue_area = true
+		print(\"I can chat with you\")
+
+func _on_dialog_area_body_exited(_body):
+	player_is_in_dialogue_area = false
+	is_in_dialogue = false
+
+func _on_dialog_screen_end_dialog():
+	is_in_dialogue = false
+	
+func start_conversation() -> void:
+	if player_is_in_dialogue_area:
+		is_in_dialogue = true
+		print(\"NPC is busy chatting\")
+		dialogue_screen.play_dialog(dialog_name)
+	else:
+		is_in_dialogue = false
+		dialogue_screen.end_dialogue()
+"
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_00c3f"]
+size = Vector2(102.857, 40.7143)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_sj4ie"]
+atlas = ExtResource("3_slyhv")
+region = Rect2(0, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mf07u"]
+atlas = ExtResource("3_slyhv")
+region = Rect2(48, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_h57yj"]
+atlas = ExtResource("3_slyhv")
+region = Rect2(96, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_s6wy3"]
+atlas = ExtResource("3_slyhv")
+region = Rect2(144, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xoe87"]
+atlas = ExtResource("4_fby7u")
+region = Rect2(0, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5aokb"]
+atlas = ExtResource("4_fby7u")
+region = Rect2(48, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_olcpd"]
+atlas = ExtResource("4_fby7u")
+region = Rect2(96, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6nl6m"]
+atlas = ExtResource("4_fby7u")
+region = Rect2(144, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5e38o"]
+atlas = ExtResource("4_fby7u")
+region = Rect2(192, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_klly4"]
+atlas = ExtResource("4_fby7u")
+region = Rect2(240, 0, 48, 48)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_y4uej"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_sj4ie")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mf07u")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_h57yj")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_s6wy3")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xoe87")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5aokb")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_olcpd")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6nl6m")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5e38o")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_klly4")
+}],
+"loop": true,
+"name": &"walk",
+"speed": 7.0
+}]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_y8b5a"]
+radius = 17.0
+height = 48.0
+
+[node name="base_animal" type="CharacterBody2D"]
+collision_layer = 8
+script = SubResource("GDScript_yd1w5")
+dialog_name = "dog_1"
+
+[node name="Dialog_Area" type="Area2D" parent="."]
+visible = false
+collision_layer = 9
+collision_mask = 2
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Dialog_Area"]
+position = Vector2(0, -2.85714)
+shape = SubResource("RectangleShape2D_00c3f")
+debug_color = Color(0.905882, 0, 0.745098, 0.419608)
+
+[node name="interaction_notifier" parent="." instance=ExtResource("2_igwup")]
+visible = false
+position = Vector2(1.42858, 15)
+
+[node name="Sprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(-2, -12)
+rotation = 3.14159
+scale = Vector2(1.2, -1.2)
+sprite_frames = SubResource("SpriteFrames_y4uej")
+animation = &"idle"
+autoplay = "idle"
+frame_progress = 0.600796
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(3, 0)
+rotation = 1.5708
+shape = SubResource("CapsuleShape2D_y8b5a")
+
+[node name="chat_sound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("4_qup3u")
+volume_db = -24.0
+
+[node name="DialogScreen" parent="." instance=ExtResource("4_a4hur")]
+dialogue_script = "<null>"
+
+[connection signal="body_entered" from="Dialog_Area" to="." method="_on_dialog_area_body_entered"]
+[connection signal="body_exited" from="Dialog_Area" to="." method="_on_dialog_area_body_exited"]
