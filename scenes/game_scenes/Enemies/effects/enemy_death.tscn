@@ -50,6 +50,7 @@ animations = [{
 }]
 
 [node name="enemy_death" type="AnimatedSprite2D"]
+z_index = 50
 sprite_frames = SubResource("SpriteFrames_blux1")
 animation = &"death_animation"
 autoplay = "death_animation"
