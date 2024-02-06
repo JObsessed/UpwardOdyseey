@@ -11,7 +11,7 @@ var door_is_open : bool
 func _on_area_2d_body_entered(body):
 	if body.is_in_group("player"):
 		var player = body as CharacterBody2D
-		player.PROCESS_MODE_PAUSABLE
+		process_mode = player.PROCESS_MODE_PAUSABLE
 	
 	await get_tree().create_timer(3.0).timeout
 	print("Going to next level")

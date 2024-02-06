@@ -378,23 +378,23 @@ shape = SubResource("CapsuleShape2D_0ca4q")
 
 [node name="wall_check_left" type="RayCast2D" parent="wall_check"]
 rotation = 0.014641
-target_position = Vector2(-19.9979, 0.29281)
+target_position = Vector2(-27.1399, 0.397384)
 collision_mask = 9
 
 [node name="wall_check_right" type="RayCast2D" parent="wall_check"]
 rotation = 0.000170603
-target_position = Vector2(15.7143, -0.0026809)
+target_position = Vector2(22.1429, -0.00377764)
 collision_mask = 9
 
 [node name="floor_check" type="Node2D" parent="."]
 
 [node name="floor_check_left" type="RayCast2D" parent="floor_check"]
 position = Vector2(-17.8571, 0)
-target_position = Vector2(2.08165e-12, 30)
+target_position = Vector2(-4.3869e-05, 34.2857)
 
 [node name="floor_check_right" type="RayCast2D" parent="floor_check"]
 position = Vector2(15, 0)
-target_position = Vector2(2.08165e-12, 30)
+target_position = Vector2(0, 34.2857)
 
 [node name="player_tracker" type="Node2D" parent="."]
 

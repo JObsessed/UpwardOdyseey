@@ -1,4 +1,4 @@
-[gd_scene load_steps=30 format=3 uid="uid://bh1hideala3qw"]
+[gd_scene load_steps=31 format=3 uid="uid://bh1hideala3qw"]
 
 [ext_resource type="Script" path="res://scenes/game_scenes/levels/level_script.gd" id="1_3v2ev"]
 [ext_resource type="Texture2D" uid="uid://csvt6ohkygu1b" path="res://assets/Environment/Tilemaps/Buildings.png" id="2_w4de3"]
@@ -17,13 +17,14 @@
 [ext_resource type="Texture2D" uid="uid://ytmx8ycpjhbd" path="res://assets/Menu_assets/Buttons/pause_button.png" id="15_4a4dj"]
 [ext_resource type="PackedScene" uid="uid://db5jr3rlqw8k7" path="res://scenes/game_scenes/levels/transition/door.tscn" id="16_7nkxw"]
 [ext_resource type="PackedScene" uid="uid://ca6md28pwcqq7" path="res://scenes/game_scenes/Enemies/cyborg (punching).tscn" id="16_ntldv"]
+[ext_resource type="PackedScene" uid="uid://dwikrl6hq2phg" path="res://scenes/game_scenes/Collectables/healthPickup.tscn" id="17_5snuw"]
 [ext_resource type="PackedScene" uid="uid://d2j4wb08u7xj5" path="res://scenes/game_scenes/Collectables/key.tscn" id="17_kcyrn"]
 [ext_resource type="PackedScene" uid="uid://y6i48mflosn8" path="res://scenes/managers/collectable_manager.tscn" id="18_3ppwm"]
 [ext_resource type="PackedScene" uid="uid://duaf3ts4xk7sp" path="res://scenes/managers/player_status_manager.tscn" id="19_8q2yb"]
 [ext_resource type="PackedScene" uid="uid://cb78fjl1hv453" path="res://scenes/game_scenes/Collectables/Collectable Resources/base_item.tscn" id="20_amhk0"]
 [ext_resource type="Resource" uid="uid://b0v30iadol8bn" path="res://scenes/game_scenes/Collectables/Collectable Resources/datapad 1.tres" id="21_a1fuo"]
 [ext_resource type="PackedScene" uid="uid://gf2a5l2ihkx2" path="res://scenes/game_scenes/Enemies/Greg (npc).tscn" id="22_d11qc"]
-[ext_resource type="AudioStream" uid="uid://cqoscolo3acik" path="res://assets/Music & Sounds/music/InterRegret.ogg" id="23_aid2m"]
+[ext_resource type="AudioStream" uid="uid://bxq6emjfx6ots" path="res://assets/Music & Sounds/music/Track12.ogg" id="25_tjr4h"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_yigai"]
 texture = ExtResource("2_w4de3")
@@ -1594,11 +1595,14 @@ position = Vector2(1197, 391)
 
 [node name="Health" type="Node" parent="."]
 
+[node name="HealthPickup" parent="Health" instance=ExtResource("17_5snuw")]
+position = Vector2(1581, 370)
+
 [node name="Door" type="Node" parent="."]
 
 [node name="door" parent="Door" instance=ExtResource("16_7nkxw")]
 z_index = 99
-position = Vector2(1908, 321)
+position = Vector2(1913, 321)
 next_level = "Level3"
 key_id = "1"
 
@@ -1617,40 +1621,40 @@ key_id = "1"
 [node name="Collectables" type="Node" parent="."]
 
 [node name="base_item" parent="Collectables" instance=ExtResource("20_amhk0")]
-visible = false
-position = Vector2(656, 224)
+position = Vector2(630, 318)
 collectable_item_resource = ExtResource("21_a1fuo")
 
 [node name="base_item2" parent="Collectables" instance=ExtResource("20_amhk0")]
-visible = false
-position = Vector2(752, 224)
+position = Vector2(992, 300)
 collectable_item_resource = ExtResource("21_a1fuo")
 
 [node name="base_item3" parent="Collectables" instance=ExtResource("20_amhk0")]
-visible = false
-position = Vector2(728, 224)
+position = Vector2(1332, 394)
 collectable_item_resource = ExtResource("21_a1fuo")
 
 [node name="base_item4" parent="Collectables" instance=ExtResource("20_amhk0")]
-visible = false
-position = Vector2(704, 224)
+position = Vector2(1205, 115)
 collectable_item_resource = ExtResource("21_a1fuo")
 
 [node name="base_item5" parent="Collectables" instance=ExtResource("20_amhk0")]
-visible = false
-position = Vector2(680, 224)
+position = Vector2(533, 361)
 collectable_item_resource = ExtResource("21_a1fuo")
 
 [node name="NPCs" type="Node" parent="."]
 
-[node name="npc" parent="NPCs" instance=ExtResource("22_d11qc")]
+[node name="npc_1" parent="NPCs" instance=ExtResource("22_d11qc")]
 position = Vector2(332, 361)
-level_name = "Level2"
+level_name = "Level2_1"
+
+[node name="npc_2" parent="NPCs" instance=ExtResource("22_d11qc")]
+position = Vector2(1620, 361)
+level_name = "Level2_2"
 
 [node name="Background_Music" type="AudioStreamPlayer" parent="."]
-stream = ExtResource("23_aid2m")
-volume_db = -36.0
+stream = ExtResource("25_tjr4h")
+volume_db = -20.0
 autoplay = true
+bus = &"Music"
 
 [connection signal="pressed" from="User_Interface/MarginContainer/TextureButton" to="User_Interface" method="_on_texture_button_pressed"]
 

@@ -360,11 +360,11 @@ target_position = Vector2(46.4286, -0.00792085)
 
 [node name="floor_check_left" type="RayCast2D" parent="Node2D/floor_check"]
 position = Vector2(-22, 0)
-target_position = Vector2(-0.142859, 31.4286)
+target_position = Vector2(-0.142859, 50.7143)
 
 [node name="floor_check_right" type="RayCast2D" parent="Node2D/floor_check"]
 position = Vector2(22, 0)
-target_position = Vector2(0.142859, 31.4286)
+target_position = Vector2(0.142859, 50.7143)
 
 [node name="Area2D" type="Area2D" parent="."]
 collision_layer = 9

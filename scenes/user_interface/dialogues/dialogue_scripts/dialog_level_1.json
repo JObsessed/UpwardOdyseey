@@ -15,7 +15,9 @@
 	{"name": "Greg", "text": "Before I forget: Someone has drilled out the road further ahead. Jump over it, provided you can manage it."},
 	{"name": "Greg", "text": "You jump with 'w'. But you probably already knew that. Why don't you try a double jump?"},
 	{"name": "You", "text": "Thanks for the tip. Is there anything else?"},
-	{"name": "Greg", "text": "Nah, you'll be fine. See ya! Ah, one more thing: if you get knocked out, the city spits you out again and you start all over again. So be careful what you do!"}
+	{"name": "Greg", "text": "Nah, you'll be fine. See ya! Ah, one more thing: if you get knocked out, the city spits you out again and you start all over again. So be careful what you do!"},
+	{"name": "Greg", "text": "Oh, could you help me collect my datapads? I'll reward you generously! I scattered them all over the city on my pub crawl last night..."},
+	{"name": "You", "text": "I see what I can do"}
 	
 	
 	

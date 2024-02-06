@@ -84,6 +84,7 @@ animations = [{
 }]
 
 [node name="PlayerDeathEffect" type="Node2D"]
+z_index = 50
 script = ExtResource("1_avra6")
 
 [node name="GPUParticles2D" type="GPUParticles2D" parent="."]

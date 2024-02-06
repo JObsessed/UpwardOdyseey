@@ -36,9 +36,9 @@
 [ext_resource type="PackedScene" uid="uid://cb78fjl1hv453" path="res://scenes/game_scenes/Collectables/Collectable Resources/base_item.tscn" id="21_jpxk2"]
 [ext_resource type="Resource" uid="uid://b0v30iadol8bn" path="res://scenes/game_scenes/Collectables/Collectable Resources/datapad 1.tres" id="22_gcwg0"]
 [ext_resource type="PackedScene" uid="uid://gf2a5l2ihkx2" path="res://scenes/game_scenes/Enemies/Greg (npc).tscn" id="23_quw6m"]
-[ext_resource type="AudioStream" uid="uid://cqoscolo3acik" path="res://assets/Music & Sounds/music/InterRegret.ogg" id="24_vhl18"]
 [ext_resource type="PackedScene" uid="uid://bcgh6ef2f7av1" path="res://scenes/game_scenes/Objects/destructable_obj.tscn" id="26_fyxxs"]
-[ext_resource type="Texture2D" uid="uid://dvvqltyhi4gms" path="res://assets/Environment/Tilemaps/garbage.png" id="27_hvcet"]
+[ext_resource type="PackedScene" uid="uid://dwikrl6hq2phg" path="res://scenes/game_scenes/Collectables/healthPickup.tscn" id="30_vufjw"]
+[ext_resource type="AudioStream" uid="uid://dcp17jr4nffe1" path="res://assets/Music & Sounds/music/Track11.ogg" id="37_o0jo8"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_yigai"]
 texture = ExtResource("2_fyiin")
@@ -2104,6 +2104,10 @@ stretch_mode = 0
 z_index = 25
 position = Vector2(744, 349)
 
+[node name="cyborg2" parent="Enemys" instance=ExtResource("16_sq2jk")]
+z_index = 25
+position = Vector2(1428, 380)
+
 [node name="punk" parent="Enemys" instance=ExtResource("17_ijbug")]
 position = Vector2(634, 262)
 
@@ -2111,6 +2115,27 @@ position = Vector2(634, 262)
 position = Vector2(842, 264)
 
 [node name="Health" type="Node" parent="."]
+
+[node name="HealthPickup" parent="Health" instance=ExtResource("30_vufjw")]
+position = Vector2(463, 338)
+
+[node name="HealthPickup2" parent="Health" instance=ExtResource("30_vufjw")]
+position = Vector2(737, 270)
+
+[node name="HealthPickup3" parent="Health" instance=ExtResource("30_vufjw")]
+position = Vector2(1199, 338)
+
+[node name="HealthPickup4" parent="Health" instance=ExtResource("30_vufjw")]
+z_index = 9
+position = Vector2(1868, 624)
+
+[node name="HealthPickup5" parent="Health" instance=ExtResource("30_vufjw")]
+z_index = 9
+position = Vector2(1880, 624)
+
+[node name="HealthPickup6" parent="Health" instance=ExtResource("30_vufjw")]
+z_index = 9
+position = Vector2(1893, 624)
 
 [node name="Door" type="Node" parent="."]
 
@@ -2136,28 +2161,28 @@ key_id = "1"
 [node name="Collectables" type="Node" parent="."]
 
 [node name="base_item" parent="Collectables" instance=ExtResource("21_jpxk2")]
-visible = false
-position = Vector2(656, 224)
+z_index = 7
+position = Vector2(51, 370)
 collectable_item_resource = ExtResource("22_gcwg0")
 
 [node name="base_item2" parent="Collectables" instance=ExtResource("21_jpxk2")]
-visible = false
-position = Vector2(752, 224)
+z_index = 7
+position = Vector2(860, 403)
 collectable_item_resource = ExtResource("22_gcwg0")
 
 [node name="base_item3" parent="Collectables" instance=ExtResource("21_jpxk2")]
-visible = false
-position = Vector2(728, 224)
+z_index = 5
+position = Vector2(1139, 367)
 collectable_item_resource = ExtResource("22_gcwg0")
 
 [node name="base_item4" parent="Collectables" instance=ExtResource("21_jpxk2")]
-visible = false
-position = Vector2(704, 224)
+z_index = 7
+position = Vector2(270, 370)
 collectable_item_resource = ExtResource("22_gcwg0")
 
 [node name="base_item5" parent="Collectables" instance=ExtResource("21_jpxk2")]
-visible = false
-position = Vector2(680, 224)
+z_index = 6
+position = Vector2(558, 403)
 collectable_item_resource = ExtResource("22_gcwg0")
 
 [node name="NPCs" type="Node" parent="."]
@@ -2172,9 +2197,10 @@ position = Vector2(1964, 617)
 level_name = "Level3_2"
 
 [node name="Background_Music" type="AudioStreamPlayer" parent="."]
-stream = ExtResource("24_vhl18")
-volume_db = -36.0
+stream = ExtResource("37_o0jo8")
+volume_db = -20.0
 autoplay = true
+bus = &"Music"
 
 [node name="Objects" type="Node" parent="."]
 
@@ -2185,7 +2211,6 @@ position = Vector2(1472, 138)
 [node name="Sprite2D" parent="Objects/destructable_obj" index="0"]
 position = Vector2(678, 454)
 scale = Vector2(1.59694, 1.68966)
-texture = ExtResource("27_hvcet")
 
 [node name="CollisionShape2D" parent="Objects/destructable_obj/Area2D" index="0"]
 position = Vector2(679, 454)

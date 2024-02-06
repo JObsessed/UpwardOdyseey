@@ -6,8 +6,9 @@ extends Node2D
 @onready var display_text = $Panel/Text as RichTextLabel
 @onready var chat_sound = $chat_sound as AudioStreamPlayer2D
 
-var dialogues: Dictionary = {"Level1": "res://scenes/user_interface/dialogues/dialogue_scripts/dialog_level_1.json",
-							"Level2" : "res://scenes/user_interface/dialogues/dialogue_scripts/dialog_level_2.json",
+var dialogues: Dictionary = {"Level1" : "res://scenes/user_interface/dialogues/dialogue_scripts/dialog_level_1.json",
+							"Level2_1" : "res://scenes/user_interface/dialogues/dialogue_scripts/dialog_level_2_1.json",
+							"Level2_2" : "res://scenes/user_interface/dialogues/dialogue_scripts/dialog_level_2_2.json",
 							"Level3_1" : "res://scenes/user_interface/dialogues/dialogue_scripts/dialog_level_3_1.json",
 							"Level3_2" : "res://scenes/user_interface/dialogues/dialogue_scripts/dialog_level_3_2.json"
 							}
