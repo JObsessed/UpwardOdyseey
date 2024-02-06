@@ -5,7 +5,7 @@ extends Node2D
 
 @onready var hitanimation = $HitAnimationPlayer as AnimationPlayer
 
-var destruct_eff = preload("res://scenes/game_scenes/Enemies/effects/enemy_death.tscn")
+var destruct_eff = preload("res://scenes/game_scenes/Enemies & NPC/effects/enemy_death.tscn")
 
 var object_is_intact : bool = true
 var damage : int

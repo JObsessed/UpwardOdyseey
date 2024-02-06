@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://cafllu53eb60b"]
 
-[ext_resource type="Script" path="res://scenes/game_scenes/Enemies/enemy_projectile.gd" id="1_o57uj"]
+[ext_resource type="Script" path="res://scenes/game_scenes/Enemies & NPC/enemy_projectile.gd" id="1_o57uj"]
 [ext_resource type="Texture2D" uid="uid://cd3ngtwwtnrog" path="res://assets/Environment/Other/projectile 1.png" id="2_6vat2"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_pgjlf"]

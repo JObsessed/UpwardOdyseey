@@ -7,7 +7,7 @@
 script/source = "class_name EnemyTemplate
 extends CharacterBody2D
 
-var death_eff = preload(\"res://scenes/game_scenes/Enemies/effects/enemy_death.tscn\")
+var death_eff = preload(\"res://scenes/game_scenes/Enemies & NPC/effects/enemy_death.tscn\")
 
 @onready var wall_check_left = $Node2D/wall_check/wall_check_left as RayCast2D
 @onready var wall_check_right = $Node2D/wall_check/wall_check_right as RayCast2D

@@ -10,7 +10,8 @@ var dialogues: Dictionary = {"Level1" : "res://scenes/user_interface/dialogues/d
 							"Level2_1" : "res://scenes/user_interface/dialogues/dialogue_scripts/dialog_level_2_1.json",
 							"Level2_2" : "res://scenes/user_interface/dialogues/dialogue_scripts/dialog_level_2_2.json",
 							"Level3_1" : "res://scenes/user_interface/dialogues/dialogue_scripts/dialog_level_3_1.json",
-							"Level3_2" : "res://scenes/user_interface/dialogues/dialogue_scripts/dialog_level_3_2.json"
+							"Level3_2" : "res://scenes/user_interface/dialogues/dialogue_scripts/dialog_level_3_2.json",
+							"dog_1" : "res://scenes/user_interface/dialogues/dialogue_scripts/dialog_dog_1.json"
 							}
 
 signal end_dialog
@@ -35,7 +36,13 @@ func play_dialog(dialogue : String) -> void:
 		dialog = load_dialog(dialogue_path)
 		dialog_id = -1
 		load_next_dialog()
-	
+		
+func end_dialogue():
+	is_dialog_active = false
+	$Panel.visible = false
+	emit_signal("end_dialog")
+	return
+
 func load_dialog(dialogue_path : String):
 	var file = FileAccess.open(dialogue_path, FileAccess.READ)
 	var script = JSON.parse_string(file.get_as_text())

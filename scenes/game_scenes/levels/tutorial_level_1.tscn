@@ -1,4 +1,4 @@
-[gd_scene load_steps=54 format=3 uid="uid://dhmaif1gu57tt"]
+[gd_scene load_steps=55 format=3 uid="uid://dhmaif1gu57tt"]
 
 [ext_resource type="Script" path="res://scenes/game_scenes/levels/level_script.gd" id="1_o6b7p"]
 [ext_resource type="Texture2D" uid="uid://i4hfd3ju6hm5" path="res://assets/Environment/Tilemaps/Tiles.png" id="1_r14d3"]
@@ -33,9 +33,10 @@
 [ext_resource type="Texture2D" uid="uid://ctxwq8uxfnbu7" path="res://assets/Environment/Props/Texture/TX Struct.png" id="12_a0exm"]
 [ext_resource type="PackedScene" uid="uid://duaf3ts4xk7sp" path="res://scenes/managers/player_status_manager.tscn" id="13_3lcn2"]
 [ext_resource type="Texture2D" uid="uid://bnk4yrtk0owsi" path="res://assets/Environment/Props/Texture/TX Tileset Grass.png" id="13_tblmo"]
-[ext_resource type="PackedScene" uid="uid://gf2a5l2ihkx2" path="res://scenes/game_scenes/Enemies/Greg (npc).tscn" id="19_lkqdd"]
+[ext_resource type="PackedScene" uid="uid://gf2a5l2ihkx2" path="res://scenes/game_scenes/Enemies & NPC/Greg (npc).tscn" id="19_lkqdd"]
 [ext_resource type="AudioStream" uid="uid://cqoscolo3acik" path="res://assets/Music & Sounds/music/InterRegret.ogg" id="20_iaqjs"]
 [ext_resource type="PackedScene" uid="uid://biucawdti4lif" path="res://scenes/game_scenes/Hazards/acid_pool.tscn" id="36_7dwuh"]
+[ext_resource type="PackedScene" uid="uid://cqi0y3wei7uc5" path="res://scenes/game_scenes/Enemies & NPC/base_animal (npc).tscn" id="37_5412m"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_yigai"]
 texture = ExtResource("2_qh620")
@@ -7513,6 +7514,9 @@ position = Vector2(1048, 1140)
 stream = ExtResource("20_iaqjs")
 volume_db = -20.0
 autoplay = true
+
+[node name="base_animal" parent="." instance=ExtResource("37_5412m")]
+position = Vector2(319, 354)
 
 [connection signal="pressed" from="User_Interface/MarginContainer/TextureButton" to="User_Interface" method="_on_texture_button_pressed"]
 

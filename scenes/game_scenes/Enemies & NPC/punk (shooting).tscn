@@ -1,6 +1,6 @@
 [gd_scene load_steps=26 format=3 uid="uid://cked1053jieve"]
 
-[ext_resource type="PackedScene" uid="uid://cafllu53eb60b" path="res://scenes/game_scenes/Enemies/enemy_projectile.tscn" id="1_5s3rd"]
+[ext_resource type="PackedScene" uid="uid://cafllu53eb60b" path="res://scenes/game_scenes/Enemies & NPC/enemy_projectile.tscn" id="1_5s3rd"]
 [ext_resource type="Texture2D" uid="uid://pl7s6ig6xcol" path="res://assets/NPC Modells/Punk/Punk_Walk.png" id="1_xeftq"]
 [ext_resource type="Texture2D" uid="uid://csnlwjeq4lp0t" path="res://assets/NPC Modells/Punk/Punk_idle-export.png" id="3_3ildo"]
 [ext_resource type="PackedScene" uid="uid://br4asclxmeb6e" path="res://scenes/user_interface/danger_notifier.tscn" id="3_yxk2i"]
@@ -10,7 +10,7 @@
 script/source = "class_name EnemyTemplate
 extends CharacterBody2D
 
-var death_eff = preload(\"res://scenes/game_scenes/Enemies/effects/enemy_death.tscn\")
+var death_eff = preload(\"res://scenes/game_scenes/Enemies & NPC/effects/enemy_death.tscn\")
 
 @onready var wall_check_left = $wall_check/wall_check_left as RayCast2D
 @onready var wall_check_right = $wall_check/wall_check_right as RayCast2D
