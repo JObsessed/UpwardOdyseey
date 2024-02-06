@@ -61,7 +61,7 @@ func _physics_process(delta):
 			jump()
 		elif not has_double_jumped:
 			double_jump()
-			
+	
 	#Grappling Hook
 	if $rope.is_hooked:
 		hook_velo = to_local($rope.bolt_pos).normalized() * hook_pull
@@ -76,9 +76,7 @@ func _physics_process(delta):
 	else: #not is_hooked
 		hook_velo = Vector2(0,0)
 	velocity += hook_velo
-	
-	# Get the input direction and handle the movement/deceleration.
-	# As good practice, you should replace UI actions with custom gameplay actions.
+
 	direction = Input.get_vector(\"ui_left\", \"ui_right\", \"jump\", \"ui_down\")
 	
 	if !$rope.is_hooked:
@@ -86,10 +84,7 @@ func _physics_process(delta):
 			velocity.x = direction.x * speed
 		else:
 			velocity.x = move_toward(velocity.x, 0, speed)
-			
-
-			
-			
+	
 	move_and_slide()
 	animation()
 	sfx()
@@ -143,7 +138,7 @@ func _input(event: InputEvent) -> void:
 				$rope_sfx.play()
 			else:
 				$rope.release_grappling_hook()
-	
+
 	if Input.is_action_just_pressed(\"shoot\"):
 		var _projectile = load(\"res://scenes/game_scenes/player_scenes/projectile.tscn\").instantiate()
 		_projectile.set_global_position(self.get_global_position())
@@ -155,7 +150,7 @@ func _input(event: InputEvent) -> void:
 		get_parent().add_child(_projectile)
 		print(\"Pow\")
 		$shoot_sfx.play()
-	
+
 func _on_animated_sprite_2d_animation_finished():
 	if([\"landing\", \"jump_off\", \"double_jump\"].has(animated_sprite.animation)):
 		animation_locked = false
@@ -194,7 +189,6 @@ func player_death():
 	queue_free()
 
 func sfx() -> void:
-	
 	if Input.is_action_just_pressed(\"ui_left\") or Input.is_action_just_pressed(\"ui_right\"):
 		$running_sfx.play()
 	if Input.is_action_just_released(\"ui_left\") or Input.is_action_just_released(\"ui_right\"):
@@ -719,30 +713,24 @@ debug_color = Color(0.901961, 0, 0.752941, 0.419608)
 [node name="shoot_sfx" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("11_es4vs")
 volume_db = -6.0
-bus = &"SFX"
 
 [node name="dmg_sfx" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("12_awur0")
 volume_db = -16.0
-bus = &"SFX"
 
 [node name="jump_sfx" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("12_ameqi")
 volume_db = -12.0
-bus = &"SFX"
 
 [node name="low_health_sfx" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("14_2fgvs")
-bus = &"SFX"
 
 [node name="running_sfx" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("12_nn82v")
 volume_db = 12.0
-bus = &"SFX"
 
 [node name="rope_sfx" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("12_if1hd")
-bus = &"SFX"
 
 [node name="HitAnimationGunarm" type="AnimationPlayer" parent="."]
 libraries = {

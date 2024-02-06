@@ -2143,14 +2143,14 @@ position = Vector2(1893, 624)
 z_index = 99
 position = Vector2(2297, 640)
 next_level = "Level1"
-key_id = "1"
+key_id = "3"
 
 [node name="Key" type="Node" parent="."]
 
 [node name="Key2" parent="Key" instance=ExtResource("18_0fj2i")]
 z_index = 90
 position = Vector2(2149, 616)
-key_id = "1"
+key_id = "3"
 
 [node name="Manager" type="Node" parent="."]
 
@@ -2196,12 +2196,6 @@ z_index = 99
 position = Vector2(1964, 617)
 level_name = "Level3_2"
 
-[node name="Background_Music" type="AudioStreamPlayer" parent="."]
-stream = ExtResource("37_o0jo8")
-volume_db = -20.0
-autoplay = true
-bus = &"Music"
-
 [node name="Objects" type="Node" parent="."]
 
 [node name="destructable_obj" parent="Objects" instance=ExtResource("26_fyxxs")]
@@ -2217,6 +2211,11 @@ position = Vector2(679, 454)
 
 [node name="CollisionShape2D" parent="Objects/destructable_obj" index="2"]
 position = Vector2(679, 454)
+
+[node name="Background_Music" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("37_o0jo8")
+volume_db = -20.0
+autoplay = true
 
 [connection signal="pressed" from="User_Interface/MarginContainer/TextureButton" to="User_Interface" method="_on_texture_button_pressed"]
 

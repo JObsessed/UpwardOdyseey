@@ -2,13 +2,15 @@ extends Node
 
 var loading_screen = preload("res://scenes/user_interface/screens/transition.tscn")
 
+var menus : Dictionary = 	{	
+								"Mainmenu" : "res://scenes/menu_scenes/main_menu.tscn",
+								"DeathScreen" : "res://scenes/menu_scenes/death_menu.tscn"
+							}
 
-var menus : Dictionary = 	{"Mainmenu" : "res://scenes/menu_scenes/main_menu.tscn",
-							"DeathScreen" : "res://scenes/menu_scenes/death_menu.tscn"}
-
-var levels: Dictionary = { "Level1": "res://scenes/game_scenes/levels/tutorial_level_1.tscn",
-							"Level2": "res://scenes/game_scenes/levels/tutorial_level_2.tscn",
-							"Level3": "res://scenes/game_scenes/levels/tutorial_level_3.tscn"
+var levels: Dictionary = { 		
+								"Level1": "res://scenes/game_scenes/levels/tutorial_level_1.tscn",
+								"Level2": "res://scenes/game_scenes/levels/tutorial_level_2.tscn",
+								"Level3": "res://scenes/game_scenes/levels/tutorial_level_3.tscn"
 							}
 							
 func level_transition(level : String):

@@ -8,8 +8,7 @@ extends CanvasLayer
 # Das mit dem manuellen HealthManager reset ist auch bisschen sloppy.
 
 func _on_restart_button_pressed():
-	#GameManager.restart_game()
-	GameManager.start_game()
+	GameManager.restart_game()
 	HealthManager.reset_health()
 	queue_free()
 

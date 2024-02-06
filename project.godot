@@ -24,6 +24,7 @@ HealthManager="*res://autoloads/HealthManager.gd"
 GameManager="*res://autoloads/GameManager.gd"
 SceneManager="*res://autoloads/SceneManager.gd"
 InventoryManager="*res://autoloads/InventoryManager.gd"
+SoundManager="*res://autoloads/SoundManager.gd"
 
 [display]
 
