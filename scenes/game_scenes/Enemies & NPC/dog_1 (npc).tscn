@@ -148,7 +148,7 @@ animations = [{
 radius = 17.0
 height = 48.0
 
-[node name="base_animal" type="CharacterBody2D"]
+[node name="dog_1" type="CharacterBody2D"]
 collision_layer = 8
 script = SubResource("GDScript_yd1w5")
 dialog_name = "dog_1"
@@ -172,9 +172,8 @@ position = Vector2(-2, -12)
 rotation = 3.14159
 scale = Vector2(1.2, -1.2)
 sprite_frames = SubResource("SpriteFrames_y4uej")
-animation = &"idle"
+animation = &"walk"
 autoplay = "idle"
-frame_progress = 0.600796
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(3, 0)
