@@ -7603,6 +7603,11 @@ position = Vector2(0, 0)
 [node name="rave_1" parent="Animals" instance=ExtResource("38_xskfg")]
 position = Vector2(481, 281)
 
+[node name="rave_2" parent="Animals" instance=ExtResource("38_xskfg")]
+position = Vector2(493, 281)
+x_direction = 110
+y_direction = -60
+
 [connection signal="pressed" from="User_Interface/MarginContainer/TextureButton" to="User_Interface" method="_on_texture_button_pressed"]
 
 [editable path="User_Interface/MarginContainer/VBoxContainer/Collectable_Counter"]
