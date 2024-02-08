@@ -61,6 +61,8 @@ func check_direction() -> void:
 	animated_sprite_2d.flip_h = velocity.x > 0
 	
 func check_reset() -> void:
+	if player == null:
+		queue_free()
 	if position.y <= -250:
 		queue_free()
 		print(\"Bird is out of bounds\")

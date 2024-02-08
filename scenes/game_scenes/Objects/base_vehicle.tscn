@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3 uid="uid://d51hexgsug6b"]
+
+[ext_resource type="Texture2D" uid="uid://b407vhhl7h8b6" path="res://assets/Environment/Vehicles/2 Chassis/4.png" id="1_byopi"]
+[ext_resource type="Texture2D" uid="uid://dd6jlcrbu2ja0" path="res://assets/Environment/Vehicles/1 Bodies/1.png" id="2_i1kdq"]
+
+[node name="base_vehicle" type="Node2D"]
+
+[node name="Chassis" type="Sprite2D" parent="."]
+position = Vector2(11, 21)
+scale = Vector2(0.671875, 1)
+texture = ExtResource("1_byopi")
+
+[node name="Bodies" type="Sprite2D" parent="."]
+texture = ExtResource("2_i1kdq")
+
+[node name="Additions" type="Sprite2D" parent="."]
