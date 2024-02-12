@@ -70,6 +70,17 @@ scale = Vector2(1.5, 1.5)
 texture_normal = ExtResource("9_qfjs0")
 texture_hover = ExtResource("10_a0400")
 
+[node name="LogoRect" type="TextureRect" parent="."]
+anchors_preset = -1
+anchor_right = 0.396
+anchor_bottom = 0.185
+offset_left = 56.0
+offset_top = 48.0
+offset_right = 574.808
+offset_bottom = 222.12
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("15_rdvj0")
+
 [node name="settings_menu" parent="." instance=ExtResource("11_ctmt4")]
 visible = false
 
@@ -82,17 +93,6 @@ autoplay = true
 visible = false
 stream = ExtResource("13_nivpl")
 volume_db = -12.0
-
-[node name="TextureRect2" type="TextureRect" parent="."]
-anchors_preset = -1
-anchor_right = 0.396
-anchor_bottom = 0.185
-offset_left = 56.0
-offset_top = 48.0
-offset_right = 574.808
-offset_bottom = 222.12
-scale = Vector2(0.3, 0.3)
-texture = ExtResource("15_rdvj0")
 
 [connection signal="mouse_entered" from="settings_button" to="." method="_on_settings_button_mouse_entered"]
 [connection signal="mouse_entered" from="newGame_button" to="." method="_on_new_game_button_mouse_entered"]

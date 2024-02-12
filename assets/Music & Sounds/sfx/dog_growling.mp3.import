@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://ce3fphm016chq"
+path="res://.godot/imported/dog_growling.mp3-2077b0779ff915cb5b05c6f0a07d6eda.mp3str"
+
+[deps]
+
+source_file="res://assets/Music & Sounds/sfx/dog_growling.mp3"
+dest_files=["res://.godot/imported/dog_growling.mp3-2077b0779ff915cb5b05c6f0a07d6eda.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

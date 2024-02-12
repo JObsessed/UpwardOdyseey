@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://3xj0tvdtwvcg"
+path="res://.godot/imported/bird_flutter.mp3-47309b9ccd1c25651b9584eb7e13dcef.mp3str"
+
+[deps]
+
+source_file="res://assets/Music & Sounds/sfx/bird_flutter.mp3"
+dest_files=["res://.godot/imported/bird_flutter.mp3-47309b9ccd1c25651b9584eb7e13dcef.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

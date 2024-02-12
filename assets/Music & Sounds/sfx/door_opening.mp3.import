@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://djsxfyat5bb77"
+path="res://.godot/imported/door_opening.mp3-0cf2e7a7f330305f6d2889236a150a10.mp3str"
+
+[deps]
+
+source_file="res://assets/Music & Sounds/sfx/door_opening.mp3"
+dest_files=["res://.godot/imported/door_opening.mp3-0cf2e7a7f330305f6d2889236a150a10.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

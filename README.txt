@@ -1,6 +1,9 @@
 Lizenzen & Quellen
 
 SFX:
+	"bird_flutter": "Birds Flap" unter https://pixabay.com/de/sound-effects/search/flap/, bearbeitet mit Clideo
+	"dog_growling": "Terrier Mixed Breed Snarl Light" unter https://quicksounds.com/library/sounds/dog, bearbeitet mit Cideo
+	"door_opening": "Sliding Gate Door Opening A2 Sound Effect (Indoor)" unter https://www.fesliyanstudios.com/royalty-free-sound-effects-download/sliding-gate-232
 	"Collecting Sound": "Game treasure coin" unter https://mixkit.co/free-sound-effects/coin/
 	"jump_sound":
 	"low_health_sound":
@@ -11,6 +14,7 @@ SFX:
 	"take_damage_sound":
 		
 Music:
+	"city traffic background" "City traffic background ambience" unter https://mixkit.co/free-sound-effects/city/
 	
 	
 	
@@ -43,6 +47,9 @@ Visuals:
 		TX Tileset Grass: "Pixel Art Top Down Basic" von Cainos unter https://cainos.itch.io/pixel-art-top-down-basic
 		TX Tileset Stone Ground: "Pixel Art Top Down Basic" von Cainos unter https://cainos.itch.io/pixel-art-top-down-basic
 		TX Tileset Wall: "Pixel Art Top Down Basic" von Cainos unter https://cainos.itch.io/pixel-art-top-down-basic
+		Acid_tile: Selbsterstellt mit Asprite
+		Acid_tile_2: Selbsterstellt mit Asprite
+		Acid_tile_3: Selbsterstellt mit Asprite
 	
 	Props and Objects:
 		Door: "DOORS AND PORTALS PIXEL ART ASSET PACK" unter https://craftpix.net/product/doors-and-portals-pixel-art-asset-pack/?num=5&count=119&sq=cyberpunk&pos=12

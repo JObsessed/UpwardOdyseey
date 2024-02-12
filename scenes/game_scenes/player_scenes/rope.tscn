@@ -34,3 +34,8 @@ flip_h = true
 [node name="CollisionShape2D" type="CollisionShape2D" parent="bolt"]
 position = Vector2(0, 16)
 shape = SubResource("CapsuleShape2D_lyj3p")
+
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="bolt"]
+scale = Vector2(2, 2)
+
+[connection signal="screen_exited" from="bolt/VisibleOnScreenNotifier2D" to="." method="_on_visible_on_screen_notifier_2d_screen_exited"]

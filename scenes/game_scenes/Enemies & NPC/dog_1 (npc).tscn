@@ -2,9 +2,9 @@
 
 [ext_resource type="PackedScene" uid="uid://lgn2is5rxyu1" path="res://scenes/user_interface/dialogues/interaction_notifier.tscn" id="2_igwup"]
 [ext_resource type="Texture2D" uid="uid://cj1vbai3gdtyc" path="res://assets/Environment/Animals/1 Dog/Idle.png" id="3_slyhv"]
+[ext_resource type="AudioStream" uid="uid://ce3fphm016chq" path="res://assets/Music & Sounds/sfx/dog_growling.mp3" id="4_2k834"]
 [ext_resource type="PackedScene" uid="uid://cxxs30dek5cdi" path="res://scenes/user_interface/dialogues/dialog_screen_animals.tscn" id="4_a4hur"]
 [ext_resource type="Texture2D" uid="uid://chmhwnxfxtncm" path="res://assets/Environment/Animals/1 Dog/Walk.png" id="4_fby7u"]
-[ext_resource type="AudioStream" uid="uid://cdnd0u3cfljyj" path="res://assets/Music & Sounds/sfx/mouse_click.mp3" id="4_qup3u"]
 
 [sub_resource type="GDScript" id="GDScript_yd1w5"]
 script/source = "extends CharacterBody2D
@@ -12,7 +12,7 @@ script/source = "extends CharacterBody2D
 @onready var animated_sprite_2d = $Sprite2D as AnimatedSprite2D
 #@onready var interaction_notifier = $interaction_notifier as Node2D
 @onready var dialogue_screen = $DialogScreen as Node2D
-@onready var chat_sound = $chat_sound as AudioStreamPlayer2D
+@onready var growling_sound = $growling_sound as AudioStreamPlayer2D
 #@onready var npc_gibberish = $npc_gibberish as AudioStreamPlayer2D
 
 @export var dialog_name : String
@@ -40,6 +40,7 @@ func _on_dialog_area_body_entered(body):
 		player = body
 		player_is_in_dialogue_area = true
 		print(\"I can chat with you\")
+		growling_sound.play()
 
 func _on_dialog_area_body_exited(_body):
 	player_is_in_dialogue_area = false
@@ -172,7 +173,7 @@ position = Vector2(-2, -12)
 rotation = 3.14159
 scale = Vector2(1.2, -1.2)
 sprite_frames = SubResource("SpriteFrames_y4uej")
-animation = &"walk"
+animation = &"idle"
 autoplay = "idle"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
@@ -180,9 +181,10 @@ position = Vector2(3, 0)
 rotation = 1.5708
 shape = SubResource("CapsuleShape2D_y8b5a")
 
-[node name="chat_sound" type="AudioStreamPlayer2D" parent="."]
-stream = ExtResource("4_qup3u")
-volume_db = -24.0
+[node name="growling_sound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("4_2k834")
+volume_db = 12.0
+bus = &"SFX"
 
 [node name="DialogScreen" parent="." instance=ExtResource("4_a4hur")]
 dialogue_script = "<null>"

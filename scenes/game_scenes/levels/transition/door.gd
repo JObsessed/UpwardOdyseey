@@ -5,6 +5,7 @@ extends Node2D
 
 @onready var animated_sprite_2d : AnimatedSprite2D = $AnimatedSprite2D
 @onready var collision_shape_2d : CollisionShape2D = $CollisionShape2D
+@onready var door_sfx = $door_sfx as AudioStreamPlayer2D
 
 var door_is_open : bool 
 
@@ -27,6 +28,7 @@ func _on_key_area_2d_2_body_entered(body):
 		
 		if not door_is_open:
 			animated_sprite_2d.play("open_door")
+			door_sfx.play()
 			door_is_open = true
 			#deaktiviert Kollisionshape, damit Spieler hindurch gehen kann
 			collision_shape_2d.set_deferred("disabled", true)
@@ -35,4 +37,5 @@ func _on_key_area_2d_2_body_exited(body):
 	if body.is_in_group("player"):
 		if door_is_open:
 			animated_sprite_2d.play("close_door")
+			door_sfx.play()
 			door_is_open = false

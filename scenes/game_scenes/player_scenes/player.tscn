@@ -31,7 +31,6 @@ extends CharacterBody2D
 
 var player_death_effect = preload(\"res://scenes/game_scenes/Effects/player_death_effect.tscn\")
 
-# Get the gravity from the project settings to be synced with RigidBody nodes.
 var gravity = ProjectSettings.get_setting(\"physics/2d/default_gravity\")
 var has_double_jumped : bool = false
 var animation_locked : bool = false
@@ -73,7 +72,7 @@ func _physics_process(delta):
 			pass
 		else:
 			hook_velo.x = abs(hook_velo.x)
-	else: #not is_hooked
+	else:
 		hook_velo = Vector2(0,0)
 	velocity += hook_velo
 
@@ -102,7 +101,6 @@ func animation():
 				$gunArm.state = 1
 			else:
 				animated_sprite.play(\"idle\")
-#				animated_sprite.play(\"test_frame\")
 				$gunArm.state = 0
 
 func update_facing_direction():
@@ -508,39 +506,26 @@ var positions = [Vector2(-0,-6),Vector2(-2,-3),Vector2(-10,-13)]
 
 var state = 0
 
-
-func _ready():
-	pass # Replace with function body.
-
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta):
 	if state != -1:
 		$Gunarm.position = positions[state]
-	
 	else:
 		if $\"../AnimatedSprite2D\".animation == \"test_frame\":
 			$Gunarm.position = Vector2(-8,1)
-
 		if $\"../AnimatedSprite2D\".animation == \"jump_off\":
-
 			if $\"../AnimatedSprite2D\".frame == 0:
 				$Gunarm.position = Vector2(-10,9)
 			if $\"../AnimatedSprite2D\".frame == 1:
 				$Gunarm.position = Vector2(-10,2)
 			if $\"../AnimatedSprite2D\".frame >= 2:
 				$Gunarm.position = positions[2] - Vector2(0,2)
-		
 		if $\"../AnimatedSprite2D\".animation == \"landing\":
-
 			if $\"../AnimatedSprite2D\".frame == 0:
 				$Gunarm.position = positions[2]
 			if $\"../AnimatedSprite2D\".frame == 1:
 				$Gunarm.position = Vector2(-8,2)
 			if $\"../AnimatedSprite2D\".frame == 2:
 				$Gunarm.position =  Vector2(-8,2)
-
-
 
 func flip():
 	$\".\".scale.x = -1
@@ -560,15 +545,7 @@ script/source = "extends Sprite2D
 
 var projectile = preload(\"res://scenes/game_scenes/player_scenes/projectile.tscn\")
 
-# Called when the node enters the scene tree for the first time.
-#func _ready():
-	#set_as_top_level(true)
-
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta):
-#	self.rotation = get_angle_to(get_global_mouse_position())
-#	self.rotation_degrees = abs(get_angle_to(get_global_mouse_position()) * 180 / PI)
 	var delta_x = (self.get_global_position().x - get_global_mouse_position().x)
 	var delty_y = (self.get_global_position().y - get_global_mouse_position().y)
 	
