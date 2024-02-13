@@ -13,8 +13,8 @@ func _ready():
 	optionButton.item_selected.connect(select_window_size)
 	
 func add_sizes_to_dropdown() -> void:
-	for size in windowSizes:
-		optionButton.add_item(size)
+	for windowSize in windowSizes:
+		optionButton.add_item(windowSize)
 	
 func select_window_size(index : int) -> void:
 	match index:

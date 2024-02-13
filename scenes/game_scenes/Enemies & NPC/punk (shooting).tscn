@@ -132,22 +132,21 @@ func movement() -> void:
 			else:
 				current_speed = -CHASE_SPEED
 				
-		
 			if not floor_check_right.is_colliding():
 				state = States.Idle
-				animated_sprite_2d.flip_h
+				animated_sprite_2d.flip_h = true
 				current_speed = 0
 			if not floor_check_left.is_colliding():
 				state = States.Idle
-				animated_sprite_2d.flip_h
+				animated_sprite_2d.flip_h = true
 				current_speed = 0
 			if wall_check_right.is_colliding():
 				state = States.Idle
-				animated_sprite_2d.flip_h
+				animated_sprite_2d.flip_h = true
 				current_speed = 0
 			if wall_check_left.is_colliding():
 				state = States.Idle
-				animated_sprite_2d.flip_h
+				animated_sprite_2d.flip_h = true
 				current_speed = 0
 	
 	velocity.x = current_speed
@@ -197,7 +196,7 @@ func take_damage() -> void:
 			elif enemyhealthPoints > 0:
 				print(enemyhealthPoints)
 
-func _on_area_2d_area_entered(area):
+func _on_area_2d_area_entered(_area):
 	print(\"Projectile has hit enemy\")
 	damage = 3 
 	take_damage()
