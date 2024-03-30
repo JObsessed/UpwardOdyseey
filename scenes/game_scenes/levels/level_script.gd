@@ -15,5 +15,5 @@ func check_player_death():
 		return
 	else:
 		await get_tree().create_timer(4.0).timeout
-		get_tree().change_scene_to_file("res://scenes/menu_scenes/death_screen_menu.tscn")
+		get_tree().change_scene_to_file("res://scenes/menu_scenes/death_screen_menu_level4.tscn")
 		

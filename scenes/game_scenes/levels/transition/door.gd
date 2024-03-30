@@ -2,6 +2,7 @@ extends Node2D
 
 @export var next_level : String
 @export var key_id : String
+@export var level_door : bool
 
 @onready var animated_sprite_2d : AnimatedSprite2D = $AnimatedSprite2D
 @onready var collision_shape_2d : CollisionShape2D = $CollisionShape2D
@@ -10,14 +11,16 @@ extends Node2D
 var door_is_open : bool 
 
 func _on_area_2d_body_entered(body):
-	if body.is_in_group("player"):
-		var player = body as CharacterBody2D
-		process_mode = player.PROCESS_MODE_PAUSABLE
+	if level_door:
+		if body.is_in_group("player"):
+			var player = body as CharacterBody2D
+			process_mode = player.PROCESS_MODE_PAUSABLE
+		
+		await get_tree().create_timer(3.0).timeout
+		print("Going to next level")
+		SceneManager.level_transition(next_level)
 	
-	await get_tree().create_timer(3.0).timeout
-	print("Going to next level")
-	SceneManager.level_transition(next_level)
-
+	return
 
 func _on_key_area_2d_2_body_entered(body):
 	if body.is_in_group("player"):

@@ -7414,6 +7414,7 @@ z_index = 99
 position = Vector2(1608, 385)
 next_level = "Level2"
 key_id = "1"
+level_door = true
 
 [node name="Key" type="Node" parent="."]
 
@@ -7602,9 +7603,11 @@ position = Vector2(0, 0)
 
 [node name="rave_1" parent="Animals" instance=ExtResource("38_xskfg")]
 position = Vector2(481, 281)
+dialog_name = "bird_1"
 
 [node name="rave_2" parent="Animals" instance=ExtResource("38_xskfg")]
 position = Vector2(493, 281)
+dialog_name = "bird_1"
 x_direction = 110
 y_direction = -60
 

@@ -1,10 +1,8 @@
 
 [
-	{"name": "Greg", "text": "Hey, you're still alive!"},
-	{"name": "Greg", "text": "Unfortunately, someone hasn't cleared away their rubbish..."},
-	{"name": "Greg", "text": "Try to get rid of it!"},
-	{"name": "Greg", "text": "There's also a key for the gate somewhere."},
-	{"name": "Greg", "text": "Most gates in the city are secured with keys, so look for them!"},
-	{"name": "You", "text": "..."}
+	{"name": "Greg", "text": "Damn you made it this far"},
+	{"name": "Greg", "text": "You really could be the one to make it to the top!"},
+	{"name": "You", "text": "..."},
+	{"name": "Greg", "text": "I hope you found the key, though.. See ya later, buddy!"},
 	
 ]

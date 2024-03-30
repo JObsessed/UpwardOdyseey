@@ -1,10 +1,10 @@
 [gd_scene load_steps=20 format=3 uid="uid://cqi0y3wei7uc5"]
 
 [ext_resource type="PackedScene" uid="uid://lgn2is5rxyu1" path="res://scenes/user_interface/dialogues/interaction_notifier.tscn" id="2_igwup"]
-[ext_resource type="Texture2D" uid="uid://cj1vbai3gdtyc" path="res://assets/Environment/Animals/1 Dog/Idle.png" id="3_slyhv"]
+[ext_resource type="Texture2D" uid="uid://cj1vbai3gdtyc" path="res://assets/Environment/Animals/Dog/Idle.png" id="3_slyhv"]
 [ext_resource type="AudioStream" uid="uid://ce3fphm016chq" path="res://assets/Music & Sounds/sfx/dog_growling.mp3" id="4_2k834"]
 [ext_resource type="PackedScene" uid="uid://cxxs30dek5cdi" path="res://scenes/user_interface/dialogues/dialog_screen_animals.tscn" id="4_a4hur"]
-[ext_resource type="Texture2D" uid="uid://chmhwnxfxtncm" path="res://assets/Environment/Animals/1 Dog/Walk.png" id="4_fby7u"]
+[ext_resource type="Texture2D" uid="uid://chmhwnxfxtncm" path="res://assets/Environment/Animals/Dog/Walk.png" id="4_fby7u"]
 
 [sub_resource type="GDScript" id="GDScript_yd1w5"]
 script/source = "extends CharacterBody2D
@@ -183,7 +183,11 @@ shape = SubResource("CapsuleShape2D_y8b5a")
 
 [node name="growling_sound" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("4_2k834")
-volume_db = 12.0
+volume_db = -6.0
+
+[node name="growling_sound2" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("4_2k834")
+volume_db = -6.0
 
 [node name="DialogScreen" parent="." instance=ExtResource("4_a4hur")]
 dialogue_script = "<null>"

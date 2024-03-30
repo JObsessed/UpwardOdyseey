@@ -6,6 +6,13 @@ var main_menu = preload("res://scenes/menu_scenes/main_menu.tscn")
 var death_screen_menu = preload("res://scenes/menu_scenes/death_screen_menu.tscn")
 
 	
+func start_level4():
+	if get_tree().paused:
+		continue_game()
+		return
+		
+	SceneManager.level_transition("Level4")
+	
 func start_game():
 	if get_tree().paused:
 		continue_game()

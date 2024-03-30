@@ -5,12 +5,15 @@ var loading_screen = preload("res://scenes/user_interface/screens/transition.tsc
 var menus : Dictionary = 	{	
 								"Mainmenu" : "res://scenes/menu_scenes/main_menu.tscn",
 								"DeathScreen" : "res://scenes/menu_scenes/death_menu.tscn"
+								
 							}
 
 var levels: Dictionary = { 		
 								"Level1": "res://scenes/game_scenes/levels/tutorial_level_1.tscn",
 								"Level2": "res://scenes/game_scenes/levels/tutorial_level_2.tscn",
-								"Level3": "res://scenes/game_scenes/levels/tutorial_level_3.tscn"
+								"Level3": "res://scenes/game_scenes/levels/tutorial_level_3.tscn",
+								"Level4": "res://scenes/game_scenes/levels/level_4.tscn",
+								"TrialOver": "res://scenes/menu_scenes/trialover.tscn"
 							}
 							
 func level_transition(level : String):

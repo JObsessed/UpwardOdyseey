@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://biwk5lspsdwuk"]
 
-[ext_resource type="Script" path="res://scripts/rope.gd" id="1_due7j"]
+[ext_resource type="Script" path="res://scenes/game_scenes/rope.gd" id="1_due7j"]
 [ext_resource type="Texture2D" uid="uid://dj2ls5detduxk" path="res://assets/Character/Grappling_Hook/link.png" id="1_m0kdl"]
 [ext_resource type="Texture2D" uid="uid://cxnjfne62cgbo" path="res://assets/Character/Grappling_Hook/hook.png" id="2_iqe3h"]
 

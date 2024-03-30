@@ -25,10 +25,8 @@ func take_damage() -> void:
 			elif objectHealthPoints > 0:
 				print(objectHealthPoints)
 
-
 func _on_area_2d_area_entered(area):
 	print("Projectile has hit object")
 	hitanimation.play("hit")
 	damage = 2 
 	take_damage()
-	

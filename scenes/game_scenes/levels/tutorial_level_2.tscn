@@ -3344,7 +3344,6 @@ offset_bottom = 1690.0
 color = Color(0.0627451, 0.0509804, 0.141176, 1)
 
 [node name="Player" parent="." instance=ExtResource("10_m6iga")]
-visible = false
 top_level = true
 z_index = 98
 position = Vector2(50, 360)
@@ -3416,6 +3415,7 @@ z_index = 99
 position = Vector2(1913, 321)
 next_level = "Level3"
 key_id = "1"
+level_door = true
 
 [node name="Key" type="Node" parent="."]
 
@@ -3468,10 +3468,12 @@ position = Vector2(827, 368)
 [node name="rave_1" parent="NPCs" instance=ExtResource("29_xinxm")]
 z_index = 13
 position = Vector2(487, 282)
+dialog_name = "bird_1"
 
 [node name="rave_2" parent="NPCs" instance=ExtResource("29_xinxm")]
 z_index = 13
 position = Vector2(800, 300)
+dialog_name = "bird_1"
 
 [node name="Music & SFX" type="Node" parent="."]
 

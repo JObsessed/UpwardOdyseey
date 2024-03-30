@@ -20,6 +20,7 @@ var death_eff = preload(\"res://scenes/game_scenes/Enemies & NPC/effects/enemy_d
 @onready var state_machine = $AnimationTree.get('parameters/playback')
 @onready var sprite2D = $Sprite2D2 as Sprite2D
 
+@export var enemyhealthPoints : int
 
 const SPEED : float = 40.0
 const CHASE_SPEED : float = 80.0
@@ -36,7 +37,6 @@ var player_aim_dir : Vector2
 
 #Leben- und Schadensberechnung:
 var enemy_is_alive : bool = true
-var enemyhealthPoints = 10
 var damage = 0
 var can_take_dmg = true
 var base_damage = 1

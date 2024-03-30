@@ -11,7 +11,9 @@ var dialogues: Dictionary = {"Level1" : "res://scenes/user_interface/dialogues/d
 							"Level2_2" : "res://scenes/user_interface/dialogues/dialogue_scripts/dialog_level_2_2.json",
 							"Level3_1" : "res://scenes/user_interface/dialogues/dialogue_scripts/dialog_level_3_1.json",
 							"Level3_2" : "res://scenes/user_interface/dialogues/dialogue_scripts/dialog_level_3_2.json",
-							"dog_1" : "res://scenes/user_interface/dialogues/dialogue_scripts/dialog_dog_1.json"
+							"level4": "res://scenes/user_interface/dialogues/dialogue_scripts/dialog_level_4.json",
+							"dog_1" : "res://scenes/user_interface/dialogues/dialogue_scripts/dialog_dog_1.json",
+							"bird_1": "res://scenes/user_interface/dialogues/dialogue_scripts/bird_1.json"
 							}
 
 signal end_dialog

@@ -1,0 +1,80 @@
+[gd_scene load_steps=9 format=3 uid="uid://v4rj5h6xvml7"]
+
+[ext_resource type="Script" path="res://scenes/menu_scenes/death_screen_menu.gd" id="1_qft42"]
+[ext_resource type="Texture2D" uid="uid://c28pm1lnwddcy" path="res://assets/Menu_assets/pictures/Menu_bg.jpg" id="2_hsqup"]
+[ext_resource type="Texture2D" uid="uid://cn0fkis8d3ybb" path="res://assets/Menu_assets/Buttons/normal/restart_level_button.png" id="3_ve408"]
+[ext_resource type="Texture2D" uid="uid://y0u55hcudste" path="res://assets/Menu_assets/Buttons/hover/restart_level_button_hover.png" id="4_yewvo"]
+[ext_resource type="Texture2D" uid="uid://swjmoyycvddd" path="res://assets/Menu_assets/Buttons/normal/exit_button.png" id="5_jddeu"]
+[ext_resource type="Texture2D" uid="uid://6avvn0oyfyhi" path="res://assets/Menu_assets/Buttons/hover/exit_button_hover.png" id="6_um6ob"]
+[ext_resource type="AudioStream" uid="uid://cdnd0u3cfljyj" path="res://assets/Music & Sounds/sfx/mouse_click.mp3" id="7_uiipd"]
+
+[sub_resource type="SystemFont" id="SystemFont_7faij"]
+font_names = PackedStringArray("Krungthep")
+
+[node name="trial_over_screen" type="CanvasLayer"]
+script = ExtResource("1_qft42")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+modulate = Color(0.34902, 0.4, 1, 1)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_hsqup")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/PanelContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 24
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 24
+theme_override_constants/margin_bottom = 12
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/PanelContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="TextureButton" type="TextureButton" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+texture_normal = ExtResource("3_ve408")
+texture_hover = ExtResource("4_yewvo")
+
+[node name="exit_game_button" type="TextureButton" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+texture_normal = ExtResource("5_jddeu")
+texture_hover = ExtResource("6_um6ob")
+
+[node name="Label" type="Label" parent="."]
+offset_left = 272.0
+offset_top = 112.0
+offset_right = 893.0
+offset_bottom = 219.0
+size_flags_horizontal = 4
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = SubResource("SystemFont_7faij")
+theme_override_font_sizes/font_size = 40
+text = "You did beat the demo level!
+Thank you for playing :)"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("7_uiipd")
+volume_db = -12.0
+bus = &"SFX"
+
+[connection signal="mouse_entered" from="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/TextureButton" to="." method="_on_restart_button_mouse_entered"]
+[connection signal="pressed" from="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/TextureButton" to="." method="_on_restart_button_pressed"]
+[connection signal="mouse_entered" from="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/exit_game_button" to="." method="_on_exit_game_button_mouse_entered"]
+[connection signal="pressed" from="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/exit_game_button" to="." method="_on_exit_game_button_pressed"]

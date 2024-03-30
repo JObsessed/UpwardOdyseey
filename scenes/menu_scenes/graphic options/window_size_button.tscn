@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://ccwlv0wl2cc44"]
 
 [ext_resource type="PackedScene" uid="uid://ci83a5601bml0" path="res://scenes/template_scenes/option_selection_button.tscn" id="1_oac2h"]
-[ext_resource type="Script" path="res://scripts/window_size_button.gd" id="2_k54nu"]
+[ext_resource type="Script" path="res://scripts/button_scripts/window_size_button.gd" id="2_k54nu"]
 
 [sub_resource type="SystemFont" id="SystemFont_q7rms"]
 font_names = PackedStringArray("Krungthep")

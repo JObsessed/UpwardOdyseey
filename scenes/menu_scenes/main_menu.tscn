@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://txud1r53w44n"]
+[gd_scene load_steps=13 format=3 uid="uid://txud1r53w44n"]
 
 [ext_resource type="Texture2D" uid="uid://c28pm1lnwddcy" path="res://assets/Menu_assets/pictures/Menu_bg.jpg" id="1_h1ogf"]
 [ext_resource type="Script" path="res://scenes/menu_scenes/main_menu.gd" id="1_y02gn"]
@@ -6,9 +6,6 @@
 [ext_resource type="Texture2D" uid="uid://bdpulxuaafcip" path="res://assets/Menu_assets/Buttons/normal/newgame_button.png" id="4_ajx67"]
 [ext_resource type="Texture2D" uid="uid://dgplll4u8q357" path="res://assets/Menu_assets/Buttons/hover/main_settings_button_hover.png" id="4_ltb6d"]
 [ext_resource type="Texture2D" uid="uid://cy6bpfikdudma" path="res://assets/Menu_assets/Buttons/hover/newgame_button_hover.png" id="5_e20ud"]
-[ext_resource type="Texture2D" uid="uid://bnm2v6gn0pxb7" path="res://assets/Menu_assets/Buttons/normal/levelSelect_button.png" id="6_qv1c5"]
-[ext_resource type="Texture2D" uid="uid://6ruj8iq0ce0l" path="res://assets/Menu_assets/Buttons/hover/levelSelect_button_hover.png" id="7_wh2oc"]
-[ext_resource type="Script" path="res://scripts/button_scripts/selectLevel_button.gd" id="8_x11no"]
 [ext_resource type="Texture2D" uid="uid://swjmoyycvddd" path="res://assets/Menu_assets/Buttons/normal/exit_button.png" id="9_qfjs0"]
 [ext_resource type="Texture2D" uid="uid://6avvn0oyfyhi" path="res://assets/Menu_assets/Buttons/hover/exit_button_hover.png" id="10_a0400"]
 [ext_resource type="PackedScene" uid="uid://dl4houhovkqae" path="res://scenes/menu_scenes/settings_menu.tscn" id="11_ctmt4"]
@@ -51,21 +48,11 @@ action_mode = 0
 texture_normal = ExtResource("4_ajx67")
 texture_hover = ExtResource("5_e20ud")
 
-[node name="selectLevel_button" type="TextureButton" parent="."]
-offset_left = 88.0
-offset_top = 408.0
-offset_right = 310.0
-offset_bottom = 471.0
-scale = Vector2(1.5, 1.5)
-texture_normal = ExtResource("6_qv1c5")
-texture_hover = ExtResource("7_wh2oc")
-script = ExtResource("8_x11no")
-
 [node name="exit_button" type="TextureButton" parent="."]
 offset_left = 96.0
-offset_top = 504.0
+offset_top = 408.0
 offset_right = 318.0
-offset_bottom = 567.0
+offset_bottom = 471.0
 scale = Vector2(1.5, 1.5)
 texture_normal = ExtResource("9_qfjs0")
 texture_hover = ExtResource("10_a0400")
@@ -96,5 +83,4 @@ volume_db = -12.0
 
 [connection signal="mouse_entered" from="settings_button" to="." method="_on_settings_button_mouse_entered"]
 [connection signal="mouse_entered" from="newGame_button" to="." method="_on_new_game_button_mouse_entered"]
-[connection signal="mouse_entered" from="selectLevel_button" to="." method="_on_select_level_button_mouse_entered"]
 [connection signal="mouse_entered" from="exit_button" to="." method="_on_exit_button_mouse_entered"]

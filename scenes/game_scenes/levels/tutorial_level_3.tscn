@@ -2103,10 +2103,12 @@ stretch_mode = 0
 [node name="cyborg" parent="Enemys" instance=ExtResource("16_sq2jk")]
 z_index = 25
 position = Vector2(744, 349)
+enemyhealthPoints = 20
 
 [node name="cyborg2" parent="Enemys" instance=ExtResource("16_sq2jk")]
 z_index = 25
 position = Vector2(1428, 380)
+enemyhealthPoints = 15
 
 [node name="punk" parent="Enemys" instance=ExtResource("17_ijbug")]
 position = Vector2(634, 262)
@@ -2142,8 +2144,9 @@ position = Vector2(1893, 624)
 [node name="door" parent="Door" instance=ExtResource("17_0noa0")]
 z_index = 99
 position = Vector2(2297, 640)
-next_level = "Level1"
+next_level = "Level4"
 key_id = "3"
+level_door = true
 
 [node name="Key" type="Node" parent="."]
 

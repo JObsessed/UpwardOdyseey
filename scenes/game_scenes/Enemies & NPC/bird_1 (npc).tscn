@@ -1,7 +1,7 @@
 [gd_scene load_steps=19 format=3 uid="uid://dimhi7mcrnvqi"]
 
-[ext_resource type="Texture2D" uid="uid://lsldhsfo4hk3" path="res://assets/Environment/Animals/8 Bird 2/Idle.png" id="2_05cmg"]
-[ext_resource type="Texture2D" uid="uid://b3p5458ej8hhv" path="res://assets/Environment/Animals/8 Bird 2/Walk.png" id="3_785ee"]
+[ext_resource type="Texture2D" uid="uid://lsldhsfo4hk3" path="res://assets/Environment/Animals/Bird/Idle.png" id="2_05cmg"]
+[ext_resource type="Texture2D" uid="uid://b3p5458ej8hhv" path="res://assets/Environment/Animals/Bird/Walk.png" id="3_785ee"]
 [ext_resource type="AudioStream" uid="uid://3xj0tvdtwvcg" path="res://assets/Music & Sounds/sfx/bird_flutter.mp3" id="3_crlup"]
 [ext_resource type="PackedScene" uid="uid://cxxs30dek5cdi" path="res://scenes/user_interface/dialogues/dialog_screen_animals.tscn" id="5_4hsik"]
 
@@ -190,8 +190,7 @@ shape = SubResource("CapsuleShape2D_y8b5a")
 
 [node name="flutter_sound" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("3_crlup")
-volume_db = 12.0
-bus = &"SFX"
+volume_db = -6.0
 
 [node name="DialogScreen" parent="." instance=ExtResource("5_4hsik")]
 dialogue_script = "<null>"

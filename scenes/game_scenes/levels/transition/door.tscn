@@ -148,8 +148,7 @@ debug_color = Color(0.752941, 0.458824, 0, 0.419608)
 
 [node name="door_sfx" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("3_w1g76")
-volume_db = 12.0
-bus = &"SFX"
+volume_db = -12.0
 
 [connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
 [connection signal="body_entered" from="KeyArea2D2" to="." method="_on_key_area_2d_2_body_entered"]
