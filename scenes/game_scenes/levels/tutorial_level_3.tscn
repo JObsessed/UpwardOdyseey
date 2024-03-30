@@ -2108,13 +2108,15 @@ enemyhealthPoints = 20
 [node name="cyborg2" parent="Enemys" instance=ExtResource("16_sq2jk")]
 z_index = 25
 position = Vector2(1428, 380)
-enemyhealthPoints = 15
+enemyhealthPoints = 20
 
 [node name="punk" parent="Enemys" instance=ExtResource("17_ijbug")]
 position = Vector2(634, 262)
+SPEED = 40.0
 
 [node name="punk2" parent="Enemys" instance=ExtResource("17_ijbug")]
 position = Vector2(842, 264)
+SPEED = 40.0
 
 [node name="Health" type="Node" parent="."]
 

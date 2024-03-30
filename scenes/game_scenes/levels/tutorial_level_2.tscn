@@ -3402,6 +3402,7 @@ stretch_mode = 0
 
 [node name="cyborg" parent="Enemys" instance=ExtResource("16_ntldv")]
 position = Vector2(1197, 391)
+enemyhealthPoints = 20
 
 [node name="Health" type="Node" parent="."]
 

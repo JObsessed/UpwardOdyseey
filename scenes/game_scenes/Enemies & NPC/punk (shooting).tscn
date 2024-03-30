@@ -25,9 +25,9 @@ var death_eff = preload(\"res://scenes/game_scenes/Enemies & NPC/effects/enemy_d
 @onready var animated_sprite_2d = $Sprite2D as AnimatedSprite2D
 
 @export var projectile : PackedScene
+@export var SPEED : float
+@export var CHASE_SPEED : float
 
-const SPEED : float = 40.0
-const CHASE_SPEED : float = 30.0
 const JUMP_VELOCITY : float = -400.0
 
 # Get the gravity from the project settings to be synced with RigidBody nodes.
@@ -352,6 +352,8 @@ collision_layer = 8
 collision_mask = 9
 script = SubResource("GDScript_yd1w5")
 projectile = ExtResource("1_5s3rd")
+SPEED = 40.0
+CHASE_SPEED = 30.0
 
 [node name="Area2D" type="Area2D" parent="."]
 collision_layer = 9
@@ -411,6 +413,7 @@ collision_mask = 3075
 [node name="chase_timer" type="Timer" parent="timer"]
 
 [node name="shoot_timer" type="Timer" parent="timer"]
+wait_time = 0.6
 
 [node name="healthbar" type="ProgressBar" parent="."]
 modulate = Color(0, 0.701961, 0.333333, 1)
@@ -431,7 +434,6 @@ position = Vector2(-7.85714, -50.7143)
 [node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("4_m8uqx")
 volume_db = -12.0
-bus = &"SFX"
 
 [connection signal="area_entered" from="Area2D" to="." method="_on_area_2d_area_entered"]
 [connection signal="timeout" from="timer/shoot_timer" to="." method="_on_shoot_timer_timeout"]
