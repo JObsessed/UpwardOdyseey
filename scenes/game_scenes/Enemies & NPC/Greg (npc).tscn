@@ -146,10 +146,12 @@ frame_progress = 0.781946
 [node name="chat_sound" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("4_dkhaj")
 volume_db = -24.0
+bus = &"SFX"
 
 [node name="npc_gibberish" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("5_rvouk")
 volume_db = -12.0
+bus = &"SFX"
 
 [connection signal="body_entered" from="Dialog_Area" to="." method="_on_dialog_area_body_entered"]
 [connection signal="body_exited" from="Dialog_Area" to="." method="_on_dialog_area_body_exited"]

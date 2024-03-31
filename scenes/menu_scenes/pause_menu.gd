@@ -17,11 +17,9 @@ func _on_exit_button_pressed():
 	queue_free()
 
 func make_pause_menu_visible() -> void:
-	#texture_rect.visible = true
 	margin_container.visible = true
 	
 func make_pause_menu_invisible() -> void:
-	#texture_rect.visible = false
 	margin_container.visible = false
 	
 func settings_pressed() -> void:

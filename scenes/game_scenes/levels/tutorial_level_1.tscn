@@ -7617,11 +7617,13 @@ y_direction = -60
 stream = ExtResource("20_iaqjs")
 volume_db = -20.0
 autoplay = true
+bus = &"Music"
 
 [node name="Background_Sounds" type="AudioStreamPlayer" parent="Music & SFX"]
 stream = ExtResource("43_2oleb")
 volume_db = -20.0
 autoplay = true
+bus = &"SFX"
 
 [connection signal="pressed" from="User_Interface/MarginContainer/TextureButton" to="User_Interface" method="_on_texture_button_pressed"]
 

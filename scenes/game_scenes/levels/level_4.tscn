@@ -8909,11 +8909,13 @@ position = Vector2(3712, 0)
 stream = ExtResource("53_pj31k")
 volume_db = -20.0
 autoplay = true
+bus = &"Music"
 
 [node name="Background_Sounds" type="AudioStreamPlayer" parent="Music & SFX"]
 stream = ExtResource("43_xe7il")
 volume_db = -20.0
 autoplay = true
+bus = &"SFX"
 
 [node name="Hazards" type="Node" parent="."]
 

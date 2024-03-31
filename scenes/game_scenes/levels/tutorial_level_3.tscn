@@ -2219,6 +2219,7 @@ position = Vector2(679, 454)
 stream = ExtResource("37_o0jo8")
 volume_db = -20.0
 autoplay = true
+bus = &"Music"
 
 [connection signal="pressed" from="User_Interface/MarginContainer/TextureButton" to="User_Interface" method="_on_texture_button_pressed"]
 
