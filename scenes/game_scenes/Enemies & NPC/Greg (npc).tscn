@@ -150,7 +150,7 @@ bus = &"SFX"
 
 [node name="npc_gibberish" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("5_rvouk")
-volume_db = -12.0
+volume_db = -6.0
 bus = &"SFX"
 
 [connection signal="body_entered" from="Dialog_Area" to="." method="_on_dialog_area_body_entered"]
